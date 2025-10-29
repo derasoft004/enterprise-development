@@ -1,6 +1,6 @@
 using Polyclinic.Enums;
 
-namespace Polyclinic;
+namespace Polyclinic.Subjects;
 
 public class Patient
 {
