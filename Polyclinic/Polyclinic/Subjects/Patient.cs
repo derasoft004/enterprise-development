@@ -4,7 +4,8 @@ namespace Polyclinic.Subjects;
 
 public class Patient
 {
-    public string PasportNumber { get; set; }
+    public int Id { get; set; }
+    public string PassportNumber { get; set; }
     public string FullName { get; set; }
     public Gender Gender { get; set; }
     public DateTime DateOfBirth { get; set; }
