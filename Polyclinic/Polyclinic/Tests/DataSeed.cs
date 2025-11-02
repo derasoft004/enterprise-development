@@ -285,7 +285,7 @@ public class DataSeed
             Id = 7,
             Patient = Patients[6],
             Doctor = Doctors[5],
-            AppointmentDateTime = new DateTime(2025, 5, 25, 16, 0,0),
+            AppointmentDateTime = new DateTime(2025, 12, 25, 16, 0,0),
             RoomNumber = 215,
             RepeatAppointment = false
         },
@@ -294,7 +294,7 @@ public class DataSeed
             Id = 8,
             Patient = Patients[7],
             Doctor = Doctors[6],
-            AppointmentDateTime = new DateTime(2025, 6, 18, 17, 30,0),
+            AppointmentDateTime = new DateTime(2025, 12, 18, 17, 30,0),
             RoomNumber = 134,
             RepeatAppointment = true
         },

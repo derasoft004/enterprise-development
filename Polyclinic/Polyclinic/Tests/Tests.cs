@@ -43,4 +43,21 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
         Assert.Equal(expectedNames, result);
     }
     
+    // repeated appointments at last month 
+    [Fact]
+    public void RepeatAppointmentsCountLastMonth()
+    {
+        const int expectedCount = 2; // 2 true and 1 false
+        var monthStart = new DateTime(2025, 12, 1);
+        var monthEnd = new DateTime(2025, 12, 31);
+
+        var result = fixture.Appointments.Count(a =>
+            a.RepeatAppointment &&
+            a.AppointmentDateTime >= monthStart &&
+            a.AppointmentDateTime <= monthEnd);
+
+        Assert.Equal(expectedCount, result);
+    }
+    
+    
 }
