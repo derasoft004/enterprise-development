@@ -274,7 +274,7 @@ public class DataSeed
 
         new Appointment{
             Id = 6,
-            Patient = Patients[1],
+            Patient = Patients[3],
             Doctor = Doctors[5],
             AppointmentDateTime = new DateTime(2025, 12, 10, 15, 20,0),
             RoomNumber = 423,

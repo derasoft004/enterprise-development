@@ -13,8 +13,8 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
         List<int> expectedId = [1, 2, 3, 5, 6];
 
         var experiencedId = fixture.Doctors
-            .Where(d => d.Experience >= 10)
-            .Select(d => d.Id)
+            .Where(doc => doc.Experience >= 10)
+            .Select(doc => doc.Id)
             .Order()
             .ToList();
 
@@ -34,10 +34,10 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
         };
 
         var result = fixture.Appointments
-            .Where(a => a.Doctor.Id == doctorId)
-            .Select(a => a.Patient)
-            .OrderBy(p => p.FullName)
-            .Select(p => p.FullName)
+            .Where(app => app.Doctor.Id == doctorId)
+            .Select(app => app.Patient)
+            .OrderBy(pat => pat.FullName)
+            .Select(pat => pat.FullName)
             .ToList();
 
         Assert.Equal(expectedNames, result);
@@ -51,13 +51,35 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
         var monthStart = new DateTime(2025, 12, 1);
         var monthEnd = new DateTime(2025, 12, 31);
 
-        var result = fixture.Appointments.Count(a =>
-            a.RepeatAppointment &&
-            a.AppointmentDateTime >= monthStart &&
-            a.AppointmentDateTime <= monthEnd);
+        var result = fixture.Appointments.Count(app =>
+            app.RepeatAppointment &&
+            app.AppointmentDateTime >= monthStart &&
+            app.AppointmentDateTime <= monthEnd);
 
         Assert.Equal(expectedCount, result);
     }
     
+    // patient who age is more 30 and they appointed to some doctors 
+    [Fact]
+    public void PatientsAgeMore30WithMultipleDoctors()
+    {
+        var expectedNames = new List<string>
+        {
+            "Никитина Ольга Петровна"
+        };
+
+        var bornDate = new DateTime(1995, 1, 1); // 2025 - 30 
+
+        var patients = fixture.Appointments
+            .GroupBy(app => app.Patient)
+            .Where(grpbpa => grpbpa.Select(a => a.Doctor.Id).Distinct().Count() > 1)
+            .Select(grpbpa => grpbpa.Key)
+            .Where(pat => pat.DateOfBirth <= bornDate)
+            .OrderBy(pat => pat.DateOfBirth)
+            .Select(pat => pat.FullName)
+            .ToList();
+
+        Assert.Equal(expectedNames, patients);
+    }
     
 }
