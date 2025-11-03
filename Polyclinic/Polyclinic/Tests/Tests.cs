@@ -27,11 +27,6 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
     public void PatientsByDoctor()
     {
         const int doctorId = 6;
-        var expectedNames = new List<string> 
-        {
-            "Михайлова Анна Романовна",
-            "Макарова Виктория Андреевна"
-        };
 
         var result = fixture.Appointments
             .Where(app => app.Doctor.Id == doctorId)
@@ -40,6 +35,11 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
             .Select(pat => pat.FullName)
             .ToList();
 
+        var expectedNames = new List<string> 
+        {
+            "Михайлова Анна Романовна",
+            "Макарова Виктория Андреевна"
+        };
         Assert.Equal(expectedNames, result);
     }
     
@@ -47,15 +47,14 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
     [Fact]
     public void RepeatAppointmentsCountLastMonth()
     {
-        const int expectedCount = 2; // 2 true and 1 false
-        var monthStart = new DateTime(2025, 12, 1);
-        var monthEnd = new DateTime(2025, 12, 31);
+        var month = new DateTime(2025, 12, 1);
 
         var result = fixture.Appointments.Count(app =>
             app.RepeatAppointment &&
-            app.AppointmentDateTime >= monthStart &&
-            app.AppointmentDateTime <= monthEnd);
-
+            app.AppointmentDateTime.Year == month.Year &&
+            app.AppointmentDateTime.Month == month.Month);
+        
+        const int expectedCount = 2; // 2 true and 1 false
         Assert.Equal(expectedCount, result);
     }
     
@@ -63,11 +62,6 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
     [Fact]
     public void PatientsAgeMore30WithMultipleDoctors()
     {
-        var expectedNames = new List<string>
-        {
-            "Никитина Ольга Петровна"
-        };
-
         var bornDate = new DateTime(1995, 1, 1); // 2025 - 30 
 
         var patients = fixture.Appointments
@@ -79,7 +73,32 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
             .Select(pat => pat.FullName)
             .ToList();
 
+        var expectedNames = new List<string>
+        {
+            "Никитина Ольга Петровна"
+        };
         Assert.Equal(expectedNames, patients);
     }
     
+    // appointments in some room at chosen month 
+    [Fact]
+    public void AppointmentsInRoomForChosenMonth()
+    {
+        const int roomNumber = 312;
+        var month = new DateTime(2025, 4, 1);
+
+        var appointments = fixture.Appointments
+            .Where(app => app.RoomNumber == roomNumber &&
+                          app.AppointmentDateTime.Year == month.Year &&
+                          app.AppointmentDateTime.Month == month.Month)
+            .Select(app => new 
+            { 
+                PatientName = app.Patient.FullName,
+                DoctorName = app.Doctor.FullName,
+                DateTime = app.AppointmentDateTime
+            })            
+            .ToList();
+
+        Assert.Single(appointments);
+    }
 }
