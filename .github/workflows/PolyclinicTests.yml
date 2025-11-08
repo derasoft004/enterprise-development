@@ -20,7 +20,7 @@ jobs:
         dotnet-version: '8.x'
         
     - name: Restore dependencies
-      run: dotnet restore Polyclinic/Polyclinic.sln
+      run: dotnet restore Polyclinic.sln
       
     - name: Build
       run: dotnet build --no-restore --configuration Release Polyclinic/Polyclinic.sln
