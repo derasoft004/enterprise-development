@@ -2,10 +2,14 @@ using Xunit;
 
 namespace Polyclinic.Tests;
 
-// class with unit-tests on data from dataseed 
+/// <summary>
+///  PolyclinicTests module with unit-tests on data from dataseed 
+/// </summary>
 public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
 {
-    // doctors with experience more 10 years
+    /// <summary>
+    /// Doctors with experience more 10 years
+    /// </summary>
     [Fact]
     public void DoctorsExperienceMore10()
     {
@@ -21,7 +25,9 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
         Assert.Equal(expectedId, experiencedId);
     }
     
-    // patients by appointments to some doctors by doctor's id
+    /// <summary>
+    /// Patients by appointments to some doctors by doctor's id
+    /// </summary>
     [Fact]
     public void PatientsByDoctor()
     {
@@ -41,7 +47,9 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
         Assert.Equal(expectedNames, result);
     }
     
-    // repeated appointments at last month 
+    /// <summary>
+    /// Repeated appointments at last month 
+    /// </summary>
     [Fact]
     public void RepeatAppointmentsCountLastMonth()
     {
@@ -56,7 +64,9 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
         Assert.Equal(expectedCount, result);
     }
     
-    // patient who age is more 30 and they appointed to some doctors 
+    /// <summary>
+    /// Patient who age is more 30 and they appointed to some doctors 
+    /// </summary>
     [Fact]
     public void PatientsAgeMore30WithMultipleDoctors()
     {
@@ -78,7 +88,9 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
         Assert.Equal(expectedNames, patients);
     }
     
-    // appointments in some room at chosen month 
+    /// <summary>
+    /// Appointments in some room at chosen month 
+    /// </summary>
     [Fact]
     public void AppointmentsInRoomForChosenMonth()
     {

@@ -3,8 +3,15 @@ using Polyclinic.Domain.Subjects;
 
 namespace Polyclinic.Tests;
 
+/// <summary>
+/// Static class containing DataSeed including: List of Doctors' Specializations, List of Doctors, List of Patients and
+/// List of Appointments
+/// </summary>
 public static class DataSeed
 {
+    /// <summary>
+    /// List of Doctors' Specializations
+    /// </summary>
     public static List<Specialization> Specializations { get; } =
     [
         new Specialization{ Id = 1, Name = "Кардиолог"},
@@ -19,6 +26,10 @@ public static class DataSeed
         new Specialization{ Id = 10, Name = "Эндокринолог"},
     ];
 
+    /// <summary>
+    /// List of Doctors (contains doctors info including PassportNumber, FullName, YearOfBirth, Specialization
+    /// and Experience)
+    /// </summary>
     public static List<Doctor> Doctors { get; } =
     [
         new Doctor
@@ -92,6 +103,10 @@ public static class DataSeed
         },
     ];
 
+    /// <summary>
+    /// List of Patients (contains patients info including PassportNumber, FullName, Gender, DateOfBirth,
+    /// Address, BloodGroup, ResusFactor and PhoneNumber)
+    /// </summary>
     public static List<Patient> Patients { get; } =
     [
         new Patient
@@ -225,6 +240,10 @@ public static class DataSeed
         },
     ];
 
+    /// <summary>
+    /// List of Appointments (contains appointment details including Patient, Doctor, AppointmentDateTime,
+    /// RoomNumber and RepeatAppointment)
+    /// </summary>
     public static List<Appointment> Appointments { get; } =
     [
         new Appointment{

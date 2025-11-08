@@ -1,5 +1,8 @@
 namespace Polyclinic.Domain.Enums;
 
+/// <summary>
+/// Doctor's specialization
+/// </summary>
 public class Specialization
 {
     public int Id { get; set; }
