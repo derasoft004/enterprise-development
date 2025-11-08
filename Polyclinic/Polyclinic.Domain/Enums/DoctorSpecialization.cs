@@ -5,6 +5,10 @@ namespace Polyclinic.Domain.Enums;
 /// </summary>
 public class Specialization
 {
-    public int Id { get; set; }
-    public required string Name { get; set; } // example Therapy, Surgery, Diagnostics, Emergency
+    public required int Id { get; set; }
+    
+    /// <summary>
+    /// Doctor's specialization's name (example Therapy, Surgery, Diagnostics, Emergency)
+    /// </summary>
+    public required string Name { get; set; } 
 }
