@@ -7,5 +7,5 @@ public class Appointment
     public required DateTime AppointmentDateTime { get; set; }
     public Doctor? Doctor { get; set; }
     public int? RoomNumber { get; set; }
-    public bool? RepeatAppointment { get; set; }
+    public required bool RepeatAppointment { get; set; }
 }

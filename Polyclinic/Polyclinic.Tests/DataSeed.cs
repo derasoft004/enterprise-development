@@ -19,7 +19,7 @@ public class DataSeed
         new Specialization{ Id = 10, Name = "Эндокринолог"},
     ];
 
-    public static List<Doctor> Doctors { get; set; } =
+    public static List<Doctor> Doctors { get; } =
     [
         new Doctor
         {
@@ -92,7 +92,7 @@ public class DataSeed
         },
     ];
 
-    public static List<Patient> Patients { get; set; } =
+    public static List<Patient> Patients { get; } =
     [
         new Patient
         {
@@ -225,7 +225,7 @@ public class DataSeed
         },
     ];
 
-    public static List<Appointment> Appointments { get; set; } =
+    public static List<Appointment> Appointments { get; } =
     [
         new Appointment{
             Id = 1,
