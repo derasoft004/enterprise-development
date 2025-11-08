@@ -3,7 +3,7 @@ using Polyclinic.Domain.Subjects;
 
 namespace Polyclinic.Tests;
 
-public class DataSeed
+public static class DataSeed
 {
     public static List<Specialization> Specializations { get; } =
     [

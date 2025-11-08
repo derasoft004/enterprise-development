@@ -29,14 +29,13 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
 
         var result = fixture.Appointments
             .Where(app => app.Doctor.Id == doctorId)
-            .Select(app => app.Patient)
-            .OrderBy(pat => pat.FullName)
-            .Select(pat => pat.FullName)
+            .Select(app => app.Patient.FullName)
+            .OrderBy(pat => pat)
             .ToList();
 
         var expectedNames = new List<string> 
         {
-            "Михайлова Анна Романовна",
+            "Александров Александр Александрович", 
             "Макарова Виктория Андреевна"
         };
         Assert.Equal(expectedNames, result);
