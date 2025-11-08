@@ -32,18 +32,18 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
     public void PatientsByDoctor()
     {
         const int doctorId = 6;
-
-        var result = fixture.Appointments
-            .Where(app => app.Doctor.Id == doctorId)
-            .Select(app => app.Patient.FullName)
-            .OrderBy(pat => pat)
-            .ToList();
-
         var expectedNames = new List<string> 
         {
             "Александров Александр Александрович", 
             "Макарова Виктория Андреевна"
         };
+        
+        var result = fixture.Appointments
+            .Where(app => app.Doctor.Id == doctorId)
+            .Select(app => app.Patient.FullName)
+            .OrderBy(pat => pat)
+            .ToList();
+        
         Assert.Equal(expectedNames, result);
     }
     
@@ -54,13 +54,13 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
     public void RepeatAppointmentsCountLastMonth()
     {
         var month = new DateTime(2025, 12, 1);
+        const int expectedCount = 2; // 2 true and 1 false
 
         var result = fixture.Appointments.Count(app =>
             app.RepeatAppointment &&
             app.AppointmentDateTime.Year == month.Year &&
             app.AppointmentDateTime.Month == month.Month);
         
-        const int expectedCount = 2; // 2 true and 1 false
         Assert.Equal(expectedCount, result);
     }
     
@@ -71,7 +71,11 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
     public void PatientsAgeMore30WithMultipleDoctors()
     {
         var bornDate = new DateTime(1995, 1, 1); // 2025 - 30 
-
+        var expectedNames = new List<string>
+        {
+            "Никитина Ольга Петровна"
+        };
+        
         var patients = fixture.Appointments
             .GroupBy(app => app.Patient)
             .Where(grpbpa => grpbpa.Select(a => a.Doctor.Id).Distinct().Count() > 1)
@@ -80,11 +84,7 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
             .OrderBy(pat => pat.DateOfBirth)
             .Select(pat => pat.FullName)
             .ToList();
-
-        var expectedNames = new List<string>
-        {
-            "Никитина Ольга Петровна"
-        };
+        
         Assert.Equal(expectedNames, patients);
     }
     
