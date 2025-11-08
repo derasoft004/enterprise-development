@@ -1,5 +1,6 @@
-using Polyclinic.Subjects;
-using Polyclinic.Tests;
+using Polyclinic.Domain.Subjects;
+
+namespace Polyclinic.Tests;
 
 public class TestFixture
 {

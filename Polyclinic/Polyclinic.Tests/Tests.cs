@@ -1,5 +1,4 @@
 using Xunit;
-using Polyclinic.Subjects;
 
 namespace Polyclinic.Tests;
 

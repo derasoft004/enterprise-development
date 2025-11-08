@@ -1,5 +1,5 @@
-using Polyclinic.Subjects;
-using Polyclinic.Enums;
+using Polyclinic.Domain.Enums;
+using Polyclinic.Domain.Subjects;
 
 namespace Polyclinic.Tests;
 

@@ -1,4 +1,4 @@
-namespace Polyclinic.Subjects;
+namespace Polyclinic.Domain.Subjects;
 
 public class Appointment
 {

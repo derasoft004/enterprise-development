@@ -1,4 +1,4 @@
-namespace Polyclinic.Enums;
+namespace Polyclinic.Domain.Enums;
 
 public class Specialization
 {
