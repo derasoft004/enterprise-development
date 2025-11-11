@@ -21,7 +21,6 @@ public class PolyclinicTests(TestFixture fixture) : IClassFixture<TestFixture>
             .Order()
             .ToList();
 
-        Assert.NotNull(experiencedId);
         Assert.Equal(expectedId, experiencedId);
     }
     
