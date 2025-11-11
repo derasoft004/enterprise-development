@@ -23,7 +23,7 @@ public class Appointment
     /// <summary>
     /// Doctor of the Appointment
     /// </summary>
-    public Doctor? Doctor { get; set; }
+    public required Doctor Doctor { get; set; }
     
     /// <summary>
     /// RoomNumber of the Appointment
