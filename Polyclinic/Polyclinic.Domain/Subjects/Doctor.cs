@@ -1,5 +1,3 @@
-using Polyclinic.Domain.Enums;
-
 namespace Polyclinic.Domain.Subjects;
 
 /// <summary>
