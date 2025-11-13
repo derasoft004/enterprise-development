@@ -5,6 +5,13 @@ namespace Polyclinic.Domain.Enums;
 /// </summary>
 public enum Gender
 {
+    /// <summary>
+    /// Patient is man
+    /// </summary>
     Male,
+    
+    /// <summary>
+    /// Patient is woman
+    /// </summary>
     Female
 }
