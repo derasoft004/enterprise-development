@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polyclinic.Tests", "Polycli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polyclinic.Infrastructure.InMemory", "Polyclinic.Infrastructure.InMemory\Polyclinic.Infrastructure.InMemory.csproj", "{46F93210-AEC3-43BC-9407-3E608A1718D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{A36CFAB9-F5A3-4D1D-B76D-757D3C82B7BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polyclinic.Contracts", "Polyclinic.Contracts\Polyclinic.Contracts.csproj", "{62C54B10-1846-4F9A-8287-14BD0074B9AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polyclinic.Application", "Polyclinic.Application\Polyclinic.Application.csproj", "{10F7F76B-CA13-4A8A-B178-3EBD8555D24D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +29,13 @@ Global
 		{46F93210-AEC3-43BC-9407-3E608A1718D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46F93210-AEC3-43BC-9407-3E608A1718D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46F93210-AEC3-43BC-9407-3E608A1718D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A36CFAB9-F5A3-4D1D-B76D-757D3C82B7BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A36CFAB9-F5A3-4D1D-B76D-757D3C82B7BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A36CFAB9-F5A3-4D1D-B76D-757D3C82B7BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A36CFAB9-F5A3-4D1D-B76D-757D3C82B7BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C54B10-1846-4F9A-8287-14BD0074B9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C54B10-1846-4F9A-8287-14BD0074B9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C54B10-1846-4F9A-8287-14BD0074B9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C54B10-1846-4F9A-8287-14BD0074B9AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10F7F76B-CA13-4A8A-B178-3EBD8555D24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F7F76B-CA13-4A8A-B178-3EBD8555D24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F7F76B-CA13-4A8A-B178-3EBD8555D24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F7F76B-CA13-4A8A-B178-3EBD8555D24D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
