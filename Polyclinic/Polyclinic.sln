@@ -1,8 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+#
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polyclinic.Domain", "Polyclinic.Domain\Polyclinic.Domain.csproj", "{26BB8DDB-2AEA-4654-A64B-58E8DA5FC2B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polyclinic.Tests", "Polyclinic.Tests\Polyclinic.Tests.csproj", "{88F7137B-D193-4784-9C20-2265F2917FE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polyclinic.Infrastructure.InMemory", "Polyclinic.Infrastructure.InMemory\Polyclinic.Infrastructure.InMemory.csproj", "{46F93210-AEC3-43BC-9407-3E608A1718D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +21,9 @@ Global
 		{88F7137B-D193-4784-9C20-2265F2917FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88F7137B-D193-4784-9C20-2265F2917FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88F7137B-D193-4784-9C20-2265F2917FE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46F93210-AEC3-43BC-9407-3E608A1718D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F93210-AEC3-43BC-9407-3E608A1718D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F93210-AEC3-43BC-9407-3E608A1718D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46F93210-AEC3-43BC-9407-3E608A1718D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
