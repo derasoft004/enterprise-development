@@ -8,17 +8,17 @@ public class Doctor
     /// <summary>
     /// Unique Doctor identifier
     /// </summary>
-    public required int  Id { get; set; }
+    public int  Id { get; set; }
     
     /// <summary>
     /// Doctor's passport number
     /// </summary>
-    public required string PassportNumber { get; set; }
+    public string PassportNumber { get; set; }
     
     /// <summary>
     /// Doctor's full name
     /// </summary>
-    public required string FullName { get; set; }
+    public string FullName { get; set; }
     
     /// <summary>
     /// Doctor's year of birth (optional)
@@ -28,7 +28,7 @@ public class Doctor
     /// <summary>
     /// Doctor's specialization
     /// </summary>
-    public required Specialization Specialization { get; set; }
+    public Specialization Specialization { get; set; }
     
     /// <summary>
     /// Doctor's work experience (optional)

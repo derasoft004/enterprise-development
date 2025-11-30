@@ -8,22 +8,22 @@ public class Appointment
     /// <summary>
     /// Unique Appointment identifier
     /// </summary>
-    public required int Id { get; set; }
+    public int Id { get; set; }
     
     /// <summary>
     /// Patient has an Appointment
     /// </summary>
-    public required Patient Patient { get; set; }
+    public Patient Patient { get; set; }
     
     /// <summary>
     /// DateTime of the Appointment
     /// </summary>
-    public required DateTime AppointmentDateTime { get; set; }
+    public DateTime AppointmentDateTime { get; set; }
     
     /// <summary>
     /// Doctor of the Appointment
     /// </summary>
-    public required Doctor Doctor { get; set; }
+    public Doctor Doctor { get; set; }
     
     /// <summary>
     /// RoomNumber of the Appointment
@@ -33,5 +33,5 @@ public class Appointment
     /// <summary>
     /// Repeated whether this Appointment
     /// </summary>
-    public required bool RepeatAppointment { get; set; }
+    public bool RepeatAppointment { get; set; }
 }

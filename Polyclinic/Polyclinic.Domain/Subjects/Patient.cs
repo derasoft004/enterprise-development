@@ -10,17 +10,17 @@ public class Patient
     /// <summary>
     /// Unique Patient identifier
     /// </summary>
-    public required int Id { get; set; }
+    public int Id { get; set; }
     
     /// <summary>
     /// Patient's passport number
     /// </summary>
-    public required string PassportNumber { get; set; }
+    public string PassportNumber { get; set; }
     
     /// <summary>
     /// Patient's full name
     /// </summary>
-    public required string FullName { get; set; }
+    public string FullName { get; set; }
     
     /// <summary>
     /// Patient's gender (optional)
@@ -30,7 +30,7 @@ public class Patient
     /// <summary>
     /// Patient's date of birth
     /// </summary>
-    public required DateTime DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
     
     /// <summary>
     /// Patient's residential address (optional)
