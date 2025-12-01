@@ -4,17 +4,30 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
         <IsPackable>false</IsPackable>
-        <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-        <PackageReference Include="xunit" Version="2.6.6" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6" />
-        <ProjectReference Include="..\Polyclinic.Domain\Polyclinic.Domain.csproj" />
+        <PackageReference Include="xunit" Version="2.6.3" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.5">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="6.0.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+        <PackageReference Include="Moq" Version="4.20.70" />
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <ProjectReference Include="..\Polyclinic.API.Host\Polyclinic.API.Host.csproj" />
+        <ProjectReference Include="..\Polyclinic.Application\Polyclinic.Application.csproj" />
+        <ProjectReference Include="..\Polyclinic.Contracts\Polyclinic.Contracts.csproj" />
+        <ProjectReference Include="..\Polyclinic.Domain\Polyclinic.Domain.csproj" />
+        <ProjectReference Include="..\Polyclinic.Infrastructure.InMemory\Polyclinic.Infrastructure.InMemory.csproj" />
+    </ItemGroup>
 
 </Project>
