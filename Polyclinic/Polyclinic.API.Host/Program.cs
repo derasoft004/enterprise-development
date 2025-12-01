@@ -6,7 +6,7 @@ using Polyclinic.Infrastructure.InMemory.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,6 +21,7 @@ builder.Services.AddScoped<IRepository<Specialization, int>, InMemorySpecializat
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 var app = builder.Build();
 
@@ -36,3 +37,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Это нужно для интеграционных тестов
+public partial class Program { }
