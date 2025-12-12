@@ -1,29 +1,24 @@
 namespace Polyclinic.Contracts.Dto;
 
 /// <summary>
-/// Data Transfer Object for Appointment entity (response)
+/// Data Transfer Object for updating Appointment
 /// </summary>
-public class AppointmentDto
+public class UpdateAppointmentRequest
 {
     /// <summary>
-    /// Appointment unique identifier
+    /// Patient identifier
     /// </summary>
-    public int Id { get; set; }
+    public required int PatientId { get; set; }
     
     /// <summary>
-    /// Patient's full name
+    /// Doctor identifier
     /// </summary>
-    public string PatientName { get; set; } = string.Empty;
-    
-    /// <summary>
-    /// Doctor's full name
-    /// </summary>
-    public string DoctorName { get; set; } = string.Empty;
+    public required int DoctorId { get; set; }
     
     /// <summary>
     /// Date and time of the appointment
     /// </summary>
-    public DateTime AppointmentDateTime { get; set; }
+    public required DateTime AppointmentDateTime { get; set; }
     
     /// <summary>
     /// Room number where appointment takes place
