@@ -8,25 +8,15 @@ namespace Polyclinic.Application.Services;
 /// <summary>
 /// Service implementation for analytical operations
 /// </summary>
-public class AnalyticsService : IAnalyticsService
+public class AnalyticsService(
+    IRepository<Doctor, int> doctorRepository,
+    IRepository<Appointment, int> appointmentRepository,
+    IRepository<Patient, int> patientRepository) 
+    : IAnalyticsService
 {
-    private readonly IRepository<Doctor, int> _doctorRepository;
-    private readonly IRepository<Appointment, int> _appointmentRepository;
-    private readonly IRepository<Patient, int> _patientRepository;
-
-    public AnalyticsService(
-        IRepository<Doctor, int> doctorRepository,
-        IRepository<Appointment, int> appointmentRepository,
-        IRepository<Patient, int> patientRepository)
-    {
-        _doctorRepository = doctorRepository;
-        _appointmentRepository = appointmentRepository;
-        _patientRepository = patientRepository;
-    }
-
     public List<DoctorDto> GetDoctorsWithExperienceMoreThan(int years)
     {
-        var doctors = _doctorRepository.ReadAll()
+        var doctors = doctorRepository.ReadAll()
             .Where(d => d.Experience >= years)
             .Select(MapDoctorToDto)
             .ToList();
@@ -36,7 +26,7 @@ public class AnalyticsService : IAnalyticsService
 
     public List<PatientDto> GetPatientsByDoctor(int doctorId)
     {
-        var patients = _appointmentRepository.ReadAll()
+        var patients = appointmentRepository.ReadAll()
             .Where(a => a.Doctor.Id == doctorId)
             .Select(a => a.Patient)
             .Distinct()
@@ -48,7 +38,7 @@ public class AnalyticsService : IAnalyticsService
 
     public int GetRepeatAppointmentsCountForMonth(int year, int month)
     {
-        var count = _appointmentRepository.ReadAll()
+        var count = appointmentRepository.ReadAll()
             .Count(a => a.RepeatAppointment && 
                        a.AppointmentDateTime.Year == year && 
                        a.AppointmentDateTime.Month == month);
@@ -59,7 +49,7 @@ public class AnalyticsService : IAnalyticsService
     public List<PatientDto> GetPatientsOverAgeWithMultipleDoctors(int age)
     {
         var cutoffDate = DateTime.Now.AddYears(-age);
-        var appointments = _appointmentRepository.ReadAll();
+        var appointments = appointmentRepository.ReadAll();
 
         var patients = appointments
             .GroupBy(a => a.Patient)
@@ -74,7 +64,7 @@ public class AnalyticsService : IAnalyticsService
 
     public List<AppointmentDto> GetAppointmentsInRoomForMonth(int roomNumber, int year, int month)
     {
-        var appointments = _appointmentRepository.ReadAll()
+        var appointments = appointmentRepository.ReadAll()
             .Where(a => a.RoomNumber == roomNumber &&
                        a.AppointmentDateTime.Year == year && 
                        a.AppointmentDateTime.Month == month)
