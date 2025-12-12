@@ -15,12 +15,12 @@ public class Patient
     /// <summary>
     /// Patient's passport number
     /// </summary>
-    public string PassportNumber { get; set; }
+    public string? PassportNumber { get; set; }
     
     /// <summary>
     /// Patient's full name
     /// </summary>
-    public string FullName { get; set; }
+    public required string FullName { get; set; }
     
     /// <summary>
     /// Patient's gender (optional)

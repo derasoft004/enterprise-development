@@ -13,7 +13,7 @@ public class Appointment
     /// <summary>
     /// Patient has an Appointment
     /// </summary>
-    public Patient Patient { get; set; }
+    public required Patient Patient { get; set; }
     
     /// <summary>
     /// DateTime of the Appointment
@@ -23,7 +23,7 @@ public class Appointment
     /// <summary>
     /// Doctor of the Appointment
     /// </summary>
-    public Doctor Doctor { get; set; }
+    public required Doctor Doctor { get; set; }
     
     /// <summary>
     /// RoomNumber of the Appointment
