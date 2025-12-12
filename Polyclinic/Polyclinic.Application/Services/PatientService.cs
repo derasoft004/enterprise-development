@@ -9,28 +9,21 @@ namespace Polyclinic.Application.Services;
 /// <summary>
 /// Service implementation for Patient business operations
 /// </summary>
-public class PatientService : IPatientService
+public class PatientService( 
+    IRepository<Patient, int> patientRepository,
+    IRepository<Appointment, int> appointmentRepository
+    ) : IPatientService
 {
-    private readonly IRepository<Patient, int> _patientRepository;
-    private readonly IRepository<Appointment, int> _appointmentRepository;
-
-    public PatientService(
-        IRepository<Patient, int> patientRepository,
-        IRepository<Appointment, int> appointmentRepository)
-    {
-        _patientRepository = patientRepository;
-        _appointmentRepository = appointmentRepository;
-    }
 
     public List<PatientDto> GetAllPatients()
     {
-        var patients = _patientRepository.ReadAll();
+        var patients = patientRepository.ReadAll();
         return patients.Select(MapToDto).ToList();
     }
 
     public PatientDto? GetPatientById(int id)
     {
-        var patient = _patientRepository.Read(id);
+        var patient = patientRepository.Read(id);
         return patient == null ? null : MapToDto(patient);
     }
 
@@ -48,32 +41,32 @@ public class PatientService : IPatientService
             PhoneNumber = createRequest.PhoneNumber
         };
 
-        var id = _patientRepository.Create(patient);
+        var id = patientRepository.Create(patient);
         return MapToDto(patient);
     }
 
     public PatientDto? UpdatePatient(int id, UpdatePatientRequest updateRequest)
     {
-        var existing = _patientRepository.Read(id);
+        var existing = patientRepository.Read(id);
         if (existing == null) return null;
 
         existing.FullName = updateRequest.FullName;
         existing.Address = updateRequest.Address;
         existing.PhoneNumber = updateRequest.PhoneNumber;
 
-        var updated = _patientRepository.Update(id, existing);
+        var updated = patientRepository.Update(id, existing);
         return updated == null ? null : MapToDto(updated);
     }
 
     public bool DeletePatient(int id)
     {
-        return _patientRepository.Delete(id);
+        return patientRepository.Delete(id);
     }
 
     public List<PatientDto> GetPatientsOverAgeWithMultipleDoctors(int age)
     {
         var cutoffDate = DateTime.Now.AddYears(-age);
-        var appointments = _appointmentRepository.ReadAll();
+        var appointments = appointmentRepository.ReadAll();
 
         var patients = appointments
             .GroupBy(a => a.Patient)

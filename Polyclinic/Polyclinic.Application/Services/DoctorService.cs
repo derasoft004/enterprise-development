@@ -8,34 +8,26 @@ namespace Polyclinic.Application.Services;
 /// <summary>
 /// Service implementation for Doctor business operations
 /// </summary>
-public class DoctorService : IDoctorService
+public class DoctorService(
+    IRepository<Doctor, int> doctorRepository,
+    IRepository<Specialization, int> specializationRepository
+    ) : IDoctorService
 {
-    private readonly IRepository<Doctor, int> _doctorRepository;
-    private readonly IRepository<Specialization, int> _specializationRepository;
-
-    public DoctorService(
-        IRepository<Doctor, int> doctorRepository,
-        IRepository<Specialization, int> specializationRepository)
-    {
-        _doctorRepository = doctorRepository;
-        _specializationRepository = specializationRepository;
-    }
-
     public List<DoctorDto> GetAllDoctors()
     {
-        var doctors = _doctorRepository.ReadAll();
+        var doctors = doctorRepository.ReadAll();
         return doctors.Select(MapToDto).ToList();
     }
 
     public DoctorDto? GetDoctorById(int id)
     {
-        var doctor = _doctorRepository.Read(id);
+        var doctor = doctorRepository.Read(id);
         return doctor == null ? null : MapToDto(doctor);
     }
 
     public DoctorDto CreateDoctor(CreateDoctorRequest createRequest)
     {
-        var specialization = _specializationRepository.Read(createRequest.SpecializationId);
+        var specialization = specializationRepository.Read(createRequest.SpecializationId);
         if (specialization == null)
             throw new ArgumentException($"Specialization with ID {createRequest.SpecializationId} not found");
 
@@ -48,16 +40,16 @@ public class DoctorService : IDoctorService
             Experience = createRequest.Experience
         };
 
-        var id = _doctorRepository.Create(doctor);
+        var id = doctorRepository.Create(doctor);
         return MapToDto(doctor);
     }
 
     public DoctorDto? UpdateDoctor(int id, UpdateDoctorRequest updateRequest)
     {
-        var existing = _doctorRepository.Read(id);
+        var existing = doctorRepository.Read(id);
         if (existing == null) return null;
 
-        var specialization = _specializationRepository.Read(updateRequest.SpecializationId);
+        var specialization = specializationRepository.Read(updateRequest.SpecializationId);
         if (specialization == null)
             throw new ArgumentException($"Specialization with ID {updateRequest.SpecializationId} not found");
 
@@ -66,18 +58,18 @@ public class DoctorService : IDoctorService
         existing.Specialization = specialization;
         existing.Experience = updateRequest.Experience;
 
-        var updated = _doctorRepository.Update(id, existing);
+        var updated = doctorRepository.Update(id, existing);
         return updated == null ? null : MapToDto(updated);
     }
 
     public bool DeleteDoctor(int id)
     {
-        return _doctorRepository.Delete(id);
+        return doctorRepository.Delete(id);
     }
 
     public List<DoctorDto> GetDoctorsWithExperienceMoreThan(int years)
     {
-        var doctors = _doctorRepository.ReadAll()
+        var doctors = doctorRepository.ReadAll()
             .Where(d => d.Experience >= years)
             .Select(MapToDto)
             .ToList();
