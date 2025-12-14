@@ -12,8 +12,6 @@ public class AppointmentsController(
     ILogger<AppointmentsController> logger) 
     : ControllerBase
 {
-    private readonly IAppointmentService _appointmentService = appointmentService;
-    private readonly ILogger<AppointmentsController> _logger = logger;
 
     [HttpGet]
     [ProducesResponseType(typeof(List<AppointmentDto>), StatusCodes.Status200OK)]
@@ -22,12 +20,12 @@ public class AppointmentsController(
     {
         try
         {
-            var appointments = _appointmentService.GetAllAppointments();
+            var appointments = appointmentService.GetAllAppointments();
             return Ok(appointments);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting all appointments");
+            logger.LogError(ex, "Error getting all appointments");
             return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
     }
@@ -46,7 +44,7 @@ public class AppointmentsController(
                 return BadRequest("Invalid appointment ID");
             }
 
-            var appointment = _appointmentService.GetAppointmentById(id);
+            var appointment = appointmentService.GetAppointmentById(id);
             
             if (appointment == null)
             {
@@ -57,7 +55,7 @@ public class AppointmentsController(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting appointment with ID {AppointmentId}", id);
+            logger.LogError(ex, "Error getting appointment with ID {AppointmentId}", id);
             return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
     }
@@ -75,7 +73,7 @@ public class AppointmentsController(
                 return ValidationProblem(ModelState);
             }
 
-            var createdAppointment = _appointmentService.CreateAppointment(request);
+            var createdAppointment = appointmentService.CreateAppointment(request);
             
             return CreatedAtAction(
                 nameof(GetAppointmentById),
@@ -84,12 +82,12 @@ public class AppointmentsController(
         }
         catch (ArgumentException ex)
         {
-            _logger.LogWarning(ex, "Validation error creating appointment");
+            logger.LogWarning(ex, "Validation error creating appointment");
             return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating appointment");
+            logger.LogError(ex, "Error creating appointment");
             return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
     }
@@ -116,7 +114,7 @@ public class AppointmentsController(
                 return ValidationProblem(ModelState);
             }
 
-            var updatedAppointment = _appointmentService.UpdateAppointment(id, request);
+            var updatedAppointment = appointmentService.UpdateAppointment(id, request);
             
             if (updatedAppointment == null)
             {
@@ -127,12 +125,12 @@ public class AppointmentsController(
         }
         catch (ArgumentException ex)
         {
-            _logger.LogWarning(ex, "Validation error updating appointment with ID {AppointmentId}", id);
+            logger.LogWarning(ex, "Validation error updating appointment with ID {AppointmentId}", id);
             return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating appointment with ID {AppointmentId}", id);
+            logger.LogError(ex, "Error updating appointment with ID {AppointmentId}", id);
             return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
     }
@@ -151,7 +149,7 @@ public class AppointmentsController(
                 return BadRequest("Invalid appointment ID");
             }
 
-            var result = _appointmentService.DeleteAppointment(id);
+            var result = appointmentService.DeleteAppointment(id);
             
             if (!result)
             {
@@ -162,7 +160,7 @@ public class AppointmentsController(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting appointment with ID {AppointmentId}", id);
+            logger.LogError(ex, "Error deleting appointment with ID {AppointmentId}", id);
             return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
     }
