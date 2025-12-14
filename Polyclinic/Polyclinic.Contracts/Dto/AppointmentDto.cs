@@ -13,12 +13,12 @@ public class AppointmentDto
     /// <summary>
     /// Patient's full name
     /// </summary>
-    public string PatientName { get; set; } = string.Empty;
+    public required string  PatientName { get; set; }
     
     /// <summary>
     /// Doctor's full name
     /// </summary>
-    public string DoctorName { get; set; } = string.Empty;
+    public string? DoctorName { get; set; }
     
     /// <summary>
     /// Date and time of the appointment

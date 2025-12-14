@@ -15,12 +15,12 @@ public class PatientDto
     /// <summary>
     /// Patient's full name
     /// </summary>
-    public string FullName { get; set; } = string.Empty;
+    public string? FullName { get; set; } 
     
     /// <summary>
     /// Patient's age (calculated from DateOfBirth)
     /// </summary>
-    public int Age { get; set; }
+    public int? Age { get; set; }
     
     /// <summary>
     /// Patient's phone number

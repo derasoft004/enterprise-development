@@ -1,7 +1,6 @@
 using Moq;
 using Polyclinic.Application.Interfaces;
 using Polyclinic.Application.Services;
-using Polyclinic.Contracts.Dto;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 using Xunit;

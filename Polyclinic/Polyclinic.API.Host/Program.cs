@@ -38,5 +38,5 @@ app.MapControllers();
 
 app.Run();
 
-// Это нужно для интеграционных тестов
+// For integration tests
 public partial class Program { }

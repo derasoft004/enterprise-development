@@ -12,7 +12,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Polyclinic.Application\Polyclinic.Application.csproj" />
-        <ProjectReference Include="..\Polyclinic.Contracts\Polyclinic.Contracts.csproj" />
         <ProjectReference Include="..\Polyclinic.Infrastructure.InMemory\Polyclinic.Infrastructure.InMemory.csproj" />
     </ItemGroup>
 

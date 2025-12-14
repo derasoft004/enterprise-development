@@ -13,20 +13,20 @@ public class DoctorDto
     /// <summary>
     /// Doctor's full name
     /// </summary>
-    public string FullName { get; set; } = string.Empty;
+    public required string FullName { get; set; }
     
     /// <summary>
     /// Doctor's specialization name
     /// </summary>
-    public string Specialization { get; set; } = string.Empty;
+    public string? Specialization { get; set; }
     
     /// <summary>
     /// Doctor's work experience in years
     /// </summary>
-    public int Experience { get; set; }
+    public int? Experience { get; set; }
     
     /// <summary>
     /// Doctor's experience level (Junior/Middle/Senior)
     /// </summary>
-    public string ExperienceLevel { get; set; } = string.Empty;
+    public string? ExperienceLevel { get; set; }
 }

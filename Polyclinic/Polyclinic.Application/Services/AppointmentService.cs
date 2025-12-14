@@ -17,7 +17,7 @@ public class AppointmentService(
     public List<AppointmentDto> GetAllAppointments()
     {
         var appointments = appointmentRepository.ReadAll();
-        return appointments.Select(MapToDto).ToList();
+        return [..appointments.Select(MapToDto)];
     }
 
     public AppointmentDto? GetAppointmentById(int id)
@@ -28,14 +28,12 @@ public class AppointmentService(
 
     public AppointmentDto CreateAppointment(CreateAppointmentRequest createRequest)
     {
-        var patient = patientRepository.Read(createRequest.PatientId);
-        if (patient == null)
-            throw new ArgumentException($"Patient with ID {createRequest.PatientId} not found");
-
-        var doctor = doctorRepository.Read(createRequest.DoctorId);
-        if (doctor == null)
-            throw new ArgumentException($"Doctor with ID {createRequest.DoctorId} not found");
-
+        var patient = patientRepository.Read(createRequest.PatientId)
+                      ?? throw new ArgumentException($"Patient with ID {createRequest.PatientId} not found");
+        
+        var doctor = doctorRepository.Read(createRequest.DoctorId)
+                      ?? throw new ArgumentException($"Doctor with ID {createRequest.DoctorId} not found");
+        
         var appointment = new Appointment
         {
             Patient = patient,
@@ -53,14 +51,12 @@ public class AppointmentService(
     {
         var existing = appointmentRepository.Read(id);
         if (existing == null) return null;
-
-        var patient = patientRepository.Read(updateRequest.PatientId);
-        if (patient == null)
-            throw new ArgumentException($"Patient with ID {updateRequest.PatientId} not found");
-
-        var doctor = doctorRepository.Read(updateRequest.DoctorId);
-        if (doctor == null)
-            throw new ArgumentException($"Doctor with ID {updateRequest.DoctorId} not found");
+        
+        var patient = patientRepository.Read(updateRequest.PatientId)
+                      ?? throw new ArgumentException($"Patient with ID {updateRequest.PatientId} not found");
+        
+        var doctor = doctorRepository.Read(updateRequest.DoctorId)
+                     ?? throw new ArgumentException($"Doctor with ID {updateRequest.DoctorId} not found");
 
         existing.Patient = patient;
         existing.Doctor = doctor;

@@ -6,14 +6,10 @@ namespace Polyclinic.API.Host.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AppointmentsController : ControllerBase
+public class AppointmentsController(
+    IAppointmentService appointmentService
+    ) : ControllerBase
 {
-    private readonly IAppointmentService _appointmentService;
-
-    public AppointmentsController(IAppointmentService appointmentService)
-    {
-        _appointmentService = appointmentService;
-    }
 
     /// <summary>
     /// Get all appointments
@@ -21,7 +17,7 @@ public class AppointmentsController : ControllerBase
     [HttpGet]
     public IActionResult GetAllAppointments()
     {
-        var appointments = _appointmentService.GetAllAppointments();
+        var appointments = appointmentService.GetAllAppointments();
         return Ok(appointments);
     }
 
@@ -31,7 +27,7 @@ public class AppointmentsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetAppointmentById(int id)
     {
-        var appointment = _appointmentService.GetAppointmentById(id);
+        var appointment = appointmentService.GetAppointmentById(id);
         if (appointment == null)
             return NotFound();
         
@@ -46,7 +42,7 @@ public class AppointmentsController : ControllerBase
     {
         try
         {
-            var appointment = _appointmentService.CreateAppointment(createRequest);
+            var appointment = appointmentService.CreateAppointment(createRequest);
             return CreatedAtAction(nameof(GetAppointmentById), new { id = appointment.Id }, appointment);
         }
         catch (Exception ex)
@@ -61,7 +57,7 @@ public class AppointmentsController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult UpdateAppointment(int id, [FromBody] UpdateAppointmentRequest updateRequest)
     {
-        var appointment = _appointmentService.UpdateAppointment(id, updateRequest);
+        var appointment = appointmentService.UpdateAppointment(id, updateRequest);
         if (appointment == null)
             return NotFound();
         
@@ -74,7 +70,7 @@ public class AppointmentsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeleteAppointment(int id)
     {
-        var result = _appointmentService.DeleteAppointment(id);
+        var result = appointmentService.DeleteAppointment(id);
         if (!result)
             return NotFound();
         
@@ -87,7 +83,7 @@ public class AppointmentsController : ControllerBase
     [HttpGet("doctor/{doctorId}")]
     public IActionResult GetAppointmentsByDoctor(int doctorId)
     {
-        var appointments = _appointmentService.GetAppointmentsByDoctor(doctorId);
+        var appointments = appointmentService.GetAppointmentsByDoctor(doctorId);
         return Ok(appointments);
     }
 }

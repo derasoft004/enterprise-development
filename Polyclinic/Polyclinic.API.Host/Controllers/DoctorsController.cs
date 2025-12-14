@@ -6,14 +6,11 @@ namespace Polyclinic.API.Host.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class DoctorsController : ControllerBase
+public class DoctorsController(
+    IDoctorService doctorService
+    ) : ControllerBase
 {
-    private readonly IDoctorService _doctorService;
 
-    public DoctorsController(IDoctorService doctorService)
-    {
-        _doctorService = doctorService;
-    }
 
     /// <summary>
     /// Get all doctors
@@ -21,7 +18,7 @@ public class DoctorsController : ControllerBase
     [HttpGet]
     public IActionResult GetAllDoctors()
     {
-        var doctors = _doctorService.GetAllDoctors();
+        var doctors = doctorService.GetAllDoctors();
         return Ok(doctors);
     }
 
@@ -31,7 +28,7 @@ public class DoctorsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetDoctorById(int id)
     {
-        var doctor = _doctorService.GetDoctorById(id);
+        var doctor = doctorService.GetDoctorById(id);
         if (doctor == null)
             return NotFound();
         
@@ -46,7 +43,7 @@ public class DoctorsController : ControllerBase
     {
         try
         {
-            var doctor = _doctorService.CreateDoctor(createRequest);
+            var doctor = doctorService.CreateDoctor(createRequest);
             return CreatedAtAction(nameof(GetDoctorById), new { id = doctor.Id }, doctor);
         }
         catch (Exception ex)
@@ -61,7 +58,7 @@ public class DoctorsController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult UpdateDoctor(int id, [FromBody] UpdateDoctorRequest updateRequest)
     {
-        var doctor = _doctorService.UpdateDoctor(id, updateRequest);
+        var doctor = doctorService.UpdateDoctor(id, updateRequest);
         if (doctor == null)
             return NotFound();
         
@@ -74,7 +71,7 @@ public class DoctorsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeleteDoctor(int id)
     {
-        var result = _doctorService.DeleteDoctor(id);
+        var result = doctorService.DeleteDoctor(id);
         if (!result)
             return NotFound();
         

@@ -6,14 +6,11 @@ namespace Polyclinic.API.Host.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AnalyticsController : ControllerBase
+public class AnalyticsController(
+    IAnalyticsService analyticsService
+    ) : ControllerBase
 {
-    private readonly IAnalyticsService _analyticsService;
 
-    public AnalyticsController(IAnalyticsService analyticsService)
-    {
-        _analyticsService = analyticsService;
-    }
 
     /// <summary>
     /// Get doctors with experience more than specified years
@@ -21,7 +18,7 @@ public class AnalyticsController : ControllerBase
     [HttpGet("doctors/experience/{years}")]
     public IActionResult GetDoctorsWithExperienceMoreThan(int years)
     {
-        var doctors = _analyticsService.GetDoctorsWithExperienceMoreThan(years);
+        var doctors = analyticsService.GetDoctorsWithExperienceMoreThan(years);
         return Ok(doctors);
     }
 
@@ -31,7 +28,7 @@ public class AnalyticsController : ControllerBase
     [HttpGet("doctors/{doctorId}/patients")]
     public IActionResult GetPatientsByDoctor(int doctorId)
     {
-        var patients = _analyticsService.GetPatientsByDoctor(doctorId);
+        var patients = analyticsService.GetPatientsByDoctor(doctorId);
         return Ok(patients);
     }
 
@@ -41,7 +38,7 @@ public class AnalyticsController : ControllerBase
     [HttpGet("appointments/repeat/{year}/{month}")]
     public IActionResult GetRepeatAppointmentsCount(int year, int month)
     {
-        var count = _analyticsService.GetRepeatAppointmentsCountForMonth(year, month);
+        var count = analyticsService.GetRepeatAppointmentsCountForMonth(year, month);
         return Ok(new CountResponseDto { Count = count });
     }
 
@@ -51,7 +48,7 @@ public class AnalyticsController : ControllerBase
     [HttpGet("patients/age/{age}/multiple-doctors")]
     public IActionResult GetPatientsOverAgeWithMultipleDoctors(int age)
     {
-        var patients = _analyticsService.GetPatientsOverAgeWithMultipleDoctors(age);
+        var patients = analyticsService.GetPatientsOverAgeWithMultipleDoctors(age);
         return Ok(patients);
     }
 
@@ -61,7 +58,7 @@ public class AnalyticsController : ControllerBase
     [HttpGet("appointments/room/{roomNumber}/{year}/{month}")]
     public IActionResult GetAppointmentsInRoomForMonth(int roomNumber, int year, int month)
     {
-        var appointments = _analyticsService.GetAppointmentsInRoomForMonth(roomNumber, year, month);
+        var appointments = analyticsService.GetAppointmentsInRoomForMonth(roomNumber, year, month);
         return Ok(appointments);
     }
 }
