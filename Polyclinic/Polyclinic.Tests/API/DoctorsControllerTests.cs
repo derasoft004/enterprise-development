@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Polyclinic.API.Host.Controllers;
 using Polyclinic.Application.Interfaces;
@@ -7,9 +8,6 @@ using Xunit;
 
 namespace Polyclinic.Tests.API;
 
-/// <summary>
-/// Tests for DoctorsController
-/// </summary>
 public class DoctorsControllerTests
 {
     private readonly Mock<IDoctorService> _mockDoctorService;
@@ -18,79 +16,146 @@ public class DoctorsControllerTests
     public DoctorsControllerTests()
     {
         _mockDoctorService = new Mock<IDoctorService>();
-        _controller = new DoctorsController(_mockDoctorService.Object);
+        var mockLogger = new Mock<ILogger<DoctorsController>>();
+        _controller = new DoctorsController(_mockDoctorService.Object, mockLogger.Object);
     }
 
     [Fact]
     public void GetAllDoctors_ReturnsOkResult()
     {
-        // Arrange
         var doctors = new List<DoctorDto>
         {
-            new() { Id = 1, FullName = "Врач 1", Experience = 5 },
-            new() { Id = 2, FullName = "Врач 2", Experience = 10 }
+            new() { Id = 1, FullName = "Doctor 1", Experience = 5 },
+            new() { Id = 2, FullName = "Doctor 2", Experience = 10 }
         };
         
         _mockDoctorService.Setup(service => service.GetAllDoctors()).Returns(doctors);
 
-        // Act
         var result = _controller.GetAllDoctors();
 
-        // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedDoctors = Assert.IsType<List<DoctorDto>>(okResult.Value);
+        var okResult = Assert.IsType<ActionResult<List<DoctorDto>>>(result);
+        var actionResult = Assert.IsType<OkObjectResult>(okResult.Result);
+        var returnedDoctors = Assert.IsType<List<DoctorDto>>(actionResult.Value);
         Assert.Equal(2, returnedDoctors.Count);
     }
 
     [Fact]
     public void GetDoctorById_ExistingId_ReturnsOkResult()
     {
-        // Arrange
-        var doctor = new DoctorDto { Id = 1, FullName = "Врач", Experience = 15 };
+        var doctor = new DoctorDto { Id = 1, FullName = "Doctor", Experience = 15 };
         _mockDoctorService.Setup(service => service.GetDoctorById(1)).Returns(doctor);
 
-        // Act
         var result = _controller.GetDoctorById(1);
 
-        // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedDoctor = Assert.IsType<DoctorDto>(okResult.Value);
-        Assert.Equal("Врач", returnedDoctor.FullName);
+        var okResult = Assert.IsType<ActionResult<DoctorDto>>(result);
+        var actionResult = Assert.IsType<OkObjectResult>(okResult.Result);
+        var returnedDoctor = Assert.IsType<DoctorDto>(actionResult.Value);
+        Assert.Equal("Doctor", returnedDoctor.FullName);
     }
 
     [Fact]
     public void GetDoctorById_NonExistingId_ReturnsNotFound()
     {
-        // Arrange
         _mockDoctorService.Setup(service => service.GetDoctorById(999)).Returns((DoctorDto?)null);
 
-        // Act
         var result = _controller.GetDoctorById(999);
 
-        // Assert
-        Assert.IsType<NotFoundResult>(result);
+        var okResult = Assert.IsType<ActionResult<DoctorDto>>(result);
+        Assert.IsType<NotFoundObjectResult>(okResult.Result);
+    }
+
+    [Fact]
+    public void GetDoctorById_InvalidId_ReturnsBadRequest()
+    {
+        var result = _controller.GetDoctorById(0);
+
+        var okResult = Assert.IsType<ActionResult<DoctorDto>>(result);
+        Assert.IsType<BadRequestObjectResult>(okResult.Result);
     }
 
     [Fact]
     public void CreateDoctor_ValidRequest_ReturnsCreated()
     {
-        // Arrange
         var createRequest = new CreateDoctorRequest
         {
-            PassportNumber = "1234 567890",
-            FullName = "Новый Врач",
+            PassportNumber = "1234567890",
+            FullName = "New Doctor",
             SpecializationId = 1
         };
 
-        var createdDoctor = new DoctorDto { Id = 100, FullName = "Новый Врач" };
+        var createdDoctor = new DoctorDto { Id = 100, FullName = "New Doctor" };
         _mockDoctorService.Setup(service => service.CreateDoctor(createRequest)).Returns(createdDoctor);
 
-        // Act
         var result = _controller.CreateDoctor(createRequest);
 
-        // Assert
-        var createdResult = Assert.IsType<CreatedAtActionResult>(result);
-        Assert.Equal(nameof(DoctorsController.GetDoctorById), createdResult.ActionName);
-        Assert.Equal(100, ((DoctorDto)createdResult.Value!).Id);
+        var createdResult = Assert.IsType<ActionResult<DoctorDto>>(result);
+        var actionResult = Assert.IsType<CreatedAtActionResult>(createdResult.Result);
+        Assert.Equal(nameof(DoctorsController.GetDoctorById), actionResult.ActionName);
+        Assert.Equal(100, ((DoctorDto)actionResult.Value!).Id);
+    }
+
+    [Fact]
+    public void UpdateDoctor_ValidRequest_ReturnsOk()
+    {
+        var updateRequest = new UpdateDoctorRequest
+        {
+            FullName = "Updated Doctor",
+            SpecializationId = 2
+        };
+
+        var updatedDoctor = new DoctorDto { Id = 1, FullName = "Updated Doctor" };
+        _mockDoctorService.Setup(service => service.UpdateDoctor(1, updateRequest)).Returns(updatedDoctor);
+
+        var result = _controller.UpdateDoctor(1, updateRequest);
+
+        var okResult = Assert.IsType<ActionResult<DoctorDto>>(result);
+        var actionResult = Assert.IsType<OkObjectResult>(okResult.Result);
+        var returnedDoctor = Assert.IsType<DoctorDto>(actionResult.Value);
+        Assert.Equal("Updated Doctor", returnedDoctor.FullName);
+    }
+
+    [Fact]
+    public void UpdateDoctor_NonExistingId_ReturnsNotFound()
+    {
+        var updateRequest = new UpdateDoctorRequest
+        {
+            FullName = "Updated Doctor",
+            SpecializationId = 2
+        };
+
+        _mockDoctorService.Setup(service => service.UpdateDoctor(999, updateRequest)).Returns((DoctorDto?)null);
+
+        var result = _controller.UpdateDoctor(999, updateRequest);
+
+        var okResult = Assert.IsType<ActionResult<DoctorDto>>(result);
+        Assert.IsType<NotFoundObjectResult>(okResult.Result);
+    }
+
+    [Fact]
+    public void DeleteDoctor_ExistingId_ReturnsNoContent()
+    {
+        _mockDoctorService.Setup(service => service.DeleteDoctor(1)).Returns(true);
+
+        var result = _controller.DeleteDoctor(1);
+
+        Assert.IsType<NoContentResult>(result);
+    }
+
+    [Fact]
+    public void DeleteDoctor_NonExistingId_ReturnsNotFound()
+    {
+        _mockDoctorService.Setup(service => service.DeleteDoctor(999)).Returns(false);
+
+        var result = _controller.DeleteDoctor(999);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public void DeleteDoctor_InvalidId_ReturnsBadRequest()
+    {
+        var result = _controller.DeleteDoctor(0);
+
+        Assert.IsType<BadRequestObjectResult>(result);
     }
 }

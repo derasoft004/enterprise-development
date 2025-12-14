@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Polyclinic.Application.Interfaces;
 using Polyclinic.Application.Services;
 using Polyclinic.Domain.Interfaces;
@@ -7,7 +8,12 @@ using Polyclinic.Infrastructure.InMemory.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.SuppressModelStateInvalidFilter = false;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -38,5 +44,4 @@ app.MapControllers();
 
 app.Run();
 
-// For integration tests
 public partial class Program { }

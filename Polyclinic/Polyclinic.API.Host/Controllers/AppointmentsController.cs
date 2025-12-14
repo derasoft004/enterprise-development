@@ -6,84 +6,164 @@ namespace Polyclinic.API.Host.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class AppointmentsController(
-    IAppointmentService appointmentService
-    ) : ControllerBase
+    IAppointmentService appointmentService,
+    ILogger<AppointmentsController> logger) 
+    : ControllerBase
 {
+    private readonly IAppointmentService _appointmentService = appointmentService;
+    private readonly ILogger<AppointmentsController> _logger = logger;
 
-    /// <summary>
-    /// Get all appointments
-    /// </summary>
     [HttpGet]
-    public IActionResult GetAllAppointments()
-    {
-        var appointments = appointmentService.GetAllAppointments();
-        return Ok(appointments);
-    }
-
-    /// <summary>
-    /// Get appointment by ID
-    /// </summary>
-    [HttpGet("{id}")]
-    public IActionResult GetAppointmentById(int id)
-    {
-        var appointment = appointmentService.GetAppointmentById(id);
-        if (appointment == null)
-            return NotFound();
-        
-        return Ok(appointment);
-    }
-
-    /// <summary>
-    /// Create new appointment
-    /// </summary>
-    [HttpPost]
-    public IActionResult CreateAppointment([FromBody] CreateAppointmentRequest createRequest)
+    [ProducesResponseType(typeof(List<AppointmentDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    public ActionResult<List<AppointmentDto>> GetAllAppointments()
     {
         try
         {
-            var appointment = appointmentService.CreateAppointment(createRequest);
-            return CreatedAtAction(nameof(GetAppointmentById), new { id = appointment.Id }, appointment);
+            var appointments = _appointmentService.GetAllAppointments();
+            return Ok(appointments);
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            _logger.LogError(ex, "Error getting all appointments");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
     }
 
-    /// <summary>
-    /// Update appointment
-    /// </summary>
-    [HttpPut("{id}")]
-    public IActionResult UpdateAppointment(int id, [FromBody] UpdateAppointmentRequest updateRequest)
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(AppointmentDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    public ActionResult<AppointmentDto> GetAppointmentById(int id)
     {
-        var appointment = appointmentService.UpdateAppointment(id, updateRequest);
-        if (appointment == null)
-            return NotFound();
-        
-        return Ok(appointment);
+        try
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid appointment ID");
+            }
+
+            var appointment = _appointmentService.GetAppointmentById(id);
+            
+            if (appointment == null)
+            {
+                return NotFound($"Appointment with ID {id} not found");
+            }
+
+            return Ok(appointment);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting appointment with ID {AppointmentId}", id);
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+        }
     }
 
-    /// <summary>
-    /// Delete appointment
-    /// </summary>
-    [HttpDelete("{id}")]
+    [HttpPost]
+    [ProducesResponseType(typeof(AppointmentDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    public ActionResult<AppointmentDto> CreateAppointment([FromBody] CreateAppointmentRequest request)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            var createdAppointment = _appointmentService.CreateAppointment(request);
+            
+            return CreatedAtAction(
+                nameof(GetAppointmentById),
+                new { id = createdAppointment.Id },
+                createdAppointment);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Validation error creating appointment");
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating appointment");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+        }
+    }
+
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(AppointmentDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    public ActionResult<AppointmentDto> UpdateAppointment(
+        int id,
+        [FromBody] UpdateAppointmentRequest request)
+    {
+        try
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid appointment ID");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            var updatedAppointment = _appointmentService.UpdateAppointment(id, request);
+            
+            if (updatedAppointment == null)
+            {
+                return NotFound($"Appointment with ID {id} not found");
+            }
+
+            return Ok(updatedAppointment);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Validation error updating appointment with ID {AppointmentId}", id);
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating appointment with ID {AppointmentId}", id);
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+        }
+    }
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
     public IActionResult DeleteAppointment(int id)
     {
-        var result = appointmentService.DeleteAppointment(id);
-        if (!result)
-            return NotFound();
-        
-        return NoContent();
-    }
+        try
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid appointment ID");
+            }
 
-    /// <summary>
-    /// Get appointments by doctor ID
-    /// </summary>
-    [HttpGet("doctor/{doctorId}")]
-    public IActionResult GetAppointmentsByDoctor(int doctorId)
-    {
-        var appointments = appointmentService.GetAppointmentsByDoctor(doctorId);
-        return Ok(appointments);
+            var result = _appointmentService.DeleteAppointment(id);
+            
+            if (!result)
+            {
+                return NotFound($"Appointment with ID {id} not found");
+            }
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting appointment with ID {AppointmentId}", id);
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+        }
     }
 }
