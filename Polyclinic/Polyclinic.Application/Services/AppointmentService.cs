@@ -43,7 +43,7 @@ public class AppointmentService(
             RepeatAppointment = createRequest.IsRepeat
         };
 
-        var id = appointmentRepository.Create(appointment);
+        appointmentRepository.Create(appointment);
         return MapToDto(appointment);
     }
 

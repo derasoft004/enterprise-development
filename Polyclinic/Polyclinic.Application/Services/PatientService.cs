@@ -41,7 +41,7 @@ public class PatientService(
             PhoneNumber = createRequest.PhoneNumber
         };
 
-        var id = patientRepository.Create(patient);
+        patientRepository.Create(patient);
         return MapToDto(patient);
     }
 

@@ -16,7 +16,7 @@ public class DoctorService(
     public List<DoctorDto> GetAllDoctors()
     {
         var doctors = doctorRepository.ReadAll();
-        return doctors.Select(MapToDto).ToList();
+        return [..doctors.Select(MapToDto)];
     }
 
     public DoctorDto? GetDoctorById(int id)
@@ -90,7 +90,7 @@ public class DoctorService(
         {
             Id = doctor.Id,
             FullName = doctor.FullName,
-            Specialization = doctor.Specialization.Name,
+            Specialization = doctor.Specialization?.Name,
             Experience = doctor.Experience ?? 0,
             ExperienceLevel = experienceLevel
         };

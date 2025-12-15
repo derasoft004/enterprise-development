@@ -11,14 +11,13 @@ namespace Polyclinic.Tests.API;
 public class PatientsControllerTests
 {
     private readonly Mock<IPatientService> _mockPatientService;
-    private readonly Mock<ILogger<PatientsController>> _mockLogger;
     private readonly PatientsController _controller;
 
     public PatientsControllerTests()
     {
         _mockPatientService = new Mock<IPatientService>();
-        _mockLogger = new Mock<ILogger<PatientsController>>();
-        _controller = new PatientsController(_mockPatientService.Object, _mockLogger.Object);
+        var mockLogger = new Mock<ILogger<PatientsController>>();
+        _controller = new PatientsController(_mockPatientService.Object, mockLogger.Object);
     }
 
     [Fact]

@@ -13,19 +13,17 @@ namespace Polyclinic.Tests.Application;
 public class AppointmentServiceTests
 {
     private readonly Mock<IRepository<Appointment, int>> _mockAppointmentRepository;
-    private readonly Mock<IRepository<Patient, int>> _mockPatientRepository;
-    private readonly Mock<IRepository<Doctor, int>> _mockDoctorRepository;
     private readonly IAppointmentService _appointmentService;
 
     public AppointmentServiceTests()
     {
         _mockAppointmentRepository = new Mock<IRepository<Appointment, int>>();
-        _mockPatientRepository = new Mock<IRepository<Patient, int>>();
-        _mockDoctorRepository = new Mock<IRepository<Doctor, int>>();
+        var mockPatientRepository = new Mock<IRepository<Patient, int>>();
+        var mockDoctorRepository = new Mock<IRepository<Doctor, int>>();
         _appointmentService = new AppointmentService(
             _mockAppointmentRepository.Object,
-            _mockPatientRepository.Object,
-            _mockDoctorRepository.Object);
+            mockPatientRepository.Object,
+            mockDoctorRepository.Object);
     }
 
     [Fact]

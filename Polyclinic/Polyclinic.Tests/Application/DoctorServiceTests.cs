@@ -14,16 +14,15 @@ namespace Polyclinic.Tests.Application;
 public class DoctorServiceTests
 {
     private readonly Mock<IRepository<Doctor, int>> _mockDoctorRepository;
-    private readonly Mock<IRepository<Specialization, int>> _mockSpecializationRepository;
     private readonly IDoctorService _doctorService;
 
     public DoctorServiceTests()
     {
         _mockDoctorRepository = new Mock<IRepository<Doctor, int>>();
-        _mockSpecializationRepository = new Mock<IRepository<Specialization, int>>();
+        var mockSpecializationRepository = new Mock<IRepository<Specialization, int>>();
         _doctorService = new DoctorService(
             _mockDoctorRepository.Object,
-            _mockSpecializationRepository.Object);
+            mockSpecializationRepository.Object);
     }
 
     [Fact]

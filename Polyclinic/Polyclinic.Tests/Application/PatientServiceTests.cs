@@ -1,7 +1,6 @@
 using Moq;
 using Polyclinic.Application.Interfaces;
 using Polyclinic.Application.Services;
-using Polyclinic.Contracts.Dto;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 using Xunit;
@@ -14,16 +13,15 @@ namespace Polyclinic.Tests.Application;
 public class PatientServiceTests
 {
     private readonly Mock<IRepository<Patient, int>> _mockPatientRepository;
-    private readonly Mock<IRepository<Appointment, int>> _mockAppointmentRepository;
     private readonly IPatientService _patientService;
 
     public PatientServiceTests()
     {
         _mockPatientRepository = new Mock<IRepository<Patient, int>>();
-        _mockAppointmentRepository = new Mock<IRepository<Appointment, int>>();
+        var mockAppointmentRepository = new Mock<IRepository<Appointment, int>>();
         _patientService = new PatientService(
             _mockPatientRepository.Object,
-            _mockAppointmentRepository.Object);
+            mockAppointmentRepository.Object);
     }
 
     [Fact]

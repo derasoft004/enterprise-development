@@ -10,8 +10,7 @@ namespace Polyclinic.Application.Services;
 /// </summary>
 public class AnalyticsService(
     IRepository<Doctor, int> doctorRepository,
-    IRepository<Appointment, int> appointmentRepository,
-    IRepository<Patient, int> patientRepository) 
+    IRepository<Appointment, int> appointmentRepository) 
     : IAnalyticsService
 {
     public List<DoctorDto> GetDoctorsWithExperienceMoreThan(int years)
@@ -87,7 +86,7 @@ public class AnalyticsService(
         {
             Id = doctor.Id,
             FullName = doctor.FullName,
-            Specialization = doctor.Specialization.Name,
+            Specialization = doctor.Specialization?.Name,
             Experience = doctor.Experience ?? 0,
             ExperienceLevel = experienceLevel
         };

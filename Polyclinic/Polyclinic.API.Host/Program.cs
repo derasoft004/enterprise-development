@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Polyclinic.Application.Interfaces;
 using Polyclinic.Application.Services;
 using Polyclinic.Domain.Interfaces;
