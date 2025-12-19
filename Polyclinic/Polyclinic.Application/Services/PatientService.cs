@@ -18,7 +18,7 @@ public class PatientService(
     public List<PatientDto> GetAllPatients()
     {
         var patients = patientRepository.ReadAll();
-        return patients.Select(MapToDto).ToList();
+        return [.. patients.Select(MapToDto)];
     }
 
     public PatientDto? GetPatientById(int id)

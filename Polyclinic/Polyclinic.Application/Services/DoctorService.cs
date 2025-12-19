@@ -27,8 +27,7 @@ public class DoctorService(
 
     public DoctorDto CreateDoctor(CreateDoctorRequest createRequest)
     {
-        var specialization = specializationRepository.Read(createRequest.SpecializationId);
-        if (specialization == null)
+        var specialization = specializationRepository.Read(createRequest.SpecializationId) ??
             throw new ArgumentException($"Specialization with ID {createRequest.SpecializationId} not found");
 
         var doctor = new Doctor
@@ -40,7 +39,7 @@ public class DoctorService(
             Experience = createRequest.Experience
         };
 
-        var id = doctorRepository.Create(doctor);
+        _ = doctorRepository.Create(doctor);
         return MapToDto(doctor);
     }
 
@@ -49,10 +48,9 @@ public class DoctorService(
         var existing = doctorRepository.Read(id);
         if (existing == null) return null;
 
-        var specialization = specializationRepository.Read(updateRequest.SpecializationId);
-        if (specialization == null)
-            throw new ArgumentException($"Specialization with ID {updateRequest.SpecializationId} not found");
-
+        var specialization = specializationRepository.Read(updateRequest.SpecializationId) ?? 
+                             throw new ArgumentException($"Specialization with ID {updateRequest.SpecializationId} not found");
+        
         existing.FullName = updateRequest.FullName;
         existing.YearOfBirth = updateRequest.YearOfBirth;
         existing.Specialization = specialization;

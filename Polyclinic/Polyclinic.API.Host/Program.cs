@@ -16,11 +16,11 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register Repositories
-builder.Services.AddScoped<IRepository<Patient, int>, InMemoryPatientRepository>();
-builder.Services.AddScoped<IRepository<Doctor, int>, InMemoryDoctorRepository>();
-builder.Services.AddScoped<IRepository<Appointment, int>, InMemoryAppointmentRepository>();
-builder.Services.AddScoped<IRepository<Specialization, int>, InMemorySpecializationRepository>();
+// Register Repositories as SINGLETON 
+builder.Services.AddSingleton<IRepository<Patient, int>, InMemoryPatientRepository>();
+builder.Services.AddSingleton<IRepository<Doctor, int>, InMemoryDoctorRepository>();
+builder.Services.AddSingleton<IRepository<Appointment, int>, InMemoryAppointmentRepository>();
+builder.Services.AddSingleton<IRepository<Specialization, int>, InMemorySpecializationRepository>();
 
 // Register Services
 builder.Services.AddScoped<IPatientService, PatientService>();
