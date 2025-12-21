@@ -5,7 +5,7 @@ namespace Polyclinic.Domain.Subjects;
 /// </summary>
 public class Specialization
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     
     /// <summary>
     /// Doctor's specialization's name (example Therapy, Surgery, Diagnostics, Emergency)
