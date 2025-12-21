@@ -1,0 +1,185 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
+
+namespace Polyclinic.Infrastructure.PostgreSQL.Migrations
+{
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Patients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PassportNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    FullName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Gender = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    BloodGroup = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
+                    ResusFactor = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Specializations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Specializations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Doctors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PassportNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    FullName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    YearOfBirth = table.Column<int>(type: "integer", nullable: true),
+                    SpecializationId = table.Column<int>(type: "integer", nullable: true),
+                    Experience = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Doctors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Doctors_Specializations_SpecializationId",
+                        column: x => x.SpecializationId,
+                        principalTable: "Specializations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PatientId = table.Column<int>(type: "integer", nullable: false),
+                    AppointmentDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DoctorId = table.Column<int>(type: "integer", nullable: false),
+                    RoomNumber = table.Column<int>(type: "integer", nullable: true),
+                    RepeatAppointment = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_AppointmentDateTime",
+                table: "Appointments",
+                column: "AppointmentDateTime");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_DoctorId",
+                table: "Appointments",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_PatientId",
+                table: "Appointments",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_RepeatAppointment",
+                table: "Appointments",
+                column: "RepeatAppointment");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_RoomNumber",
+                table: "Appointments",
+                column: "RoomNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doctors_Experience",
+                table: "Doctors",
+                column: "Experience");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doctors_FullName",
+                table: "Doctors",
+                column: "FullName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doctors_PassportNumber",
+                table: "Doctors",
+                column: "PassportNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doctors_SpecializationId",
+                table: "Doctors",
+                column: "SpecializationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_DateOfBirth",
+                table: "Patients",
+                column: "DateOfBirth");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_FullName",
+                table: "Patients",
+                column: "FullName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_PassportNumber",
+                table: "Patients",
+                column: "PassportNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Specializations_Name",
+                table: "Specializations",
+                column: "Name",
+                unique: true);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Appointments");
+
+            migrationBuilder.DropTable(
+                name: "Doctors");
+
+            migrationBuilder.DropTable(
+                name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "Specializations");
+        }
+    }
+}

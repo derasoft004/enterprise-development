@@ -23,7 +23,7 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(a => a.RepeatAppointment)
             .HasDefaultValue(false);
             
-        // Relationships - ИСПРАВЛЕНО!
+        // Relationships 
         builder.HasOne(a => a.Patient)
             .WithMany()
             .HasForeignKey("PatientId")
@@ -34,15 +34,10 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
             .HasForeignKey("DoctorId")
             .OnDelete(DeleteBehavior.Restrict);
             
-        // Indexes for performance
+        // Simple indexes 
         builder.HasIndex(a => a.AppointmentDateTime);
-            
         builder.HasIndex(a => a.RoomNumber);
-            
         builder.HasIndex(a => a.RepeatAppointment);
-            
-        builder.HasIndex(a => new { a.Patient.Id, a.AppointmentDateTime });
-            
-        builder.HasIndex(a => new { a.Doctor.Id, a.AppointmentDateTime });
+        
     }
 }

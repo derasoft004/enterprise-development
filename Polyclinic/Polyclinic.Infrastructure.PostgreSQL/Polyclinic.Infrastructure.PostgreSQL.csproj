@@ -28,4 +28,8 @@
     <ItemGroup>
         <ProjectReference Include="..\Polyclinic.Domain\Polyclinic.Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
 </Project>

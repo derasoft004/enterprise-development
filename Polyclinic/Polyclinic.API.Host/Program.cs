@@ -1,12 +1,20 @@
+using Microsoft.EntityFrameworkCore;
 using Polyclinic.Application.Interfaces;
 using Polyclinic.Application.Services;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
-using Polyclinic.Infrastructure.InMemory.Repositories;
+using Polyclinic.Infrastructure.PostgreSQL;
+using Polyclinic.Infrastructure.PostgreSQL.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add configuration from appsettings.json
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
@@ -16,19 +24,76 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register Repositories as SINGLETON 
-builder.Services.AddSingleton<IRepository<Patient, int>, InMemoryPatientRepository>();
-builder.Services.AddSingleton<IRepository<Doctor, int>, InMemoryDoctorRepository>();
-builder.Services.AddSingleton<IRepository<Appointment, int>, InMemoryAppointmentRepository>();
-builder.Services.AddSingleton<IRepository<Specialization, int>, InMemorySpecializationRepository>();
+// Get connection string from configuration
+var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
 
-// Register Services
+// Log for debugging
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
+Console.WriteLine($"Connection string from config: {(string.IsNullOrEmpty(connectionString) ? "EMPTY OR NULL" : "FOUND")}");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    // Fallback connection string
+    connectionString = "Host=localhost;Port=5432;Database=polyclinic;Username=zerder;";
+    Console.WriteLine($"Using fallback connection string: {connectionString}");
+}
+
+// Register DbContext
+builder.Services.AddDbContext<PolyclinicDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+// Register repositories
+builder.Services.AddScoped<IRepository<Patient, int>, PostgresPatientRepository>();
+builder.Services.AddScoped<IRepository<Doctor, int>, PostgresDoctorRepository>();
+builder.Services.AddScoped<IRepository<Appointment, int>, PostgresAppointmentRepository>();
+builder.Services.AddScoped<IRepository<Specialization, int>, PostgresSpecializationRepository>();
+
+// Register services
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
+// Register seeder
+builder.Services.AddScoped<PostgresSeeder>();
+
 var app = builder.Build();
+
+// Apply migrations and seed data
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<PolyclinicDbContext>();
+        Console.WriteLine("Applying migrations...");
+        
+        // Check if database exists
+        if (dbContext.Database.CanConnect())
+        {
+            Console.WriteLine("Database connected successfully.");
+            dbContext.Database.Migrate();
+            
+            var seeder = scope.ServiceProvider.GetRequiredService<PostgresSeeder>();
+            Console.WriteLine("Seeding data...");
+            seeder.Seed();
+        }
+        else
+        {
+            Console.WriteLine("Cannot connect to database. Creating database...");
+            dbContext.Database.EnsureCreated();
+            
+            var seeder = scope.ServiceProvider.GetRequiredService<PostgresSeeder>();
+            Console.WriteLine("Seeding data...");
+            seeder.Seed();
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error during migration/seeding: {ex.Message}");
+        Console.WriteLine($"Full error: {ex}");
+        throw;
+    }
+}
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
