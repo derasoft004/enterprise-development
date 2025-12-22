@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Polyclinic.Contracts\Polyclinic.Contracts.csproj" />
+        <ProjectReference Include="..\Polyclinic.Infrastructure.PostgreSQL\Polyclinic.Infrastructure.PostgreSQL.csproj" />
     </ItemGroup>
     
 </Project>

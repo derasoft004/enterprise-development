@@ -3,8 +3,11 @@ using Polyclinic.Domain.Subjects;
 
 namespace Polyclinic.Infrastructure.PostgreSQL;
 
-public class PolyclinicDbContext(DbContextOptions<PolyclinicDbContext> options) : DbContext(options)
+public class PolyclinicDbContext : DbContext
 {
+    public PolyclinicDbContext(DbContextOptions<PolyclinicDbContext> options)
+        : base(options) { }
+
     /// <summary>
     /// Patients table
     /// </summary>

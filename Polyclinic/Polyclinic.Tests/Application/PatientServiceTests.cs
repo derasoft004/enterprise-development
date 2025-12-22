@@ -4,6 +4,8 @@ using Polyclinic.Application.Services;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 using Xunit;
+using Microsoft.EntityFrameworkCore;
+using Polyclinic.Infrastructure.PostgreSQL;
 
 namespace Polyclinic.Tests.Application;
 
@@ -13,15 +15,25 @@ namespace Polyclinic.Tests.Application;
 public class PatientServiceTests
 {
     private readonly Mock<IRepository<Patient, int>> _mockPatientRepository;
+    private readonly Mock<IRepository<Appointment, int>> _mockAppointmentRepository;
+    private readonly PolyclinicDbContext _dbContext;
     private readonly IPatientService _patientService;
 
     public PatientServiceTests()
     {
         _mockPatientRepository = new Mock<IRepository<Patient, int>>();
-        var mockAppointmentRepository = new Mock<IRepository<Appointment, int>>();
+        _mockAppointmentRepository = new Mock<IRepository<Appointment, int>>();
+
+        // InMemory DbContext 
+        var options = new DbContextOptionsBuilder<PolyclinicDbContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+        _dbContext = new PolyclinicDbContext(options);
+
         _patientService = new PatientService(
             _mockPatientRepository.Object,
-            mockAppointmentRepository.Object);
+            _mockAppointmentRepository.Object,
+            _dbContext);
     }
 
     [Fact]
@@ -71,5 +83,30 @@ public class PatientServiceTests
 
         // Assert
         Assert.Null(result);
+    }
+
+    [Fact]
+    public void CreatePatient_AddsPatient()
+    {
+        // Arrange
+        var request = new Polyclinic.Contracts.Dto.CreatePatientRequest
+        {
+            PassportNumber = "1234 567890",
+            FullName = "Новый Пациент",
+            DateOfBirth = new DateTime(1990, 1, 1)
+        };
+
+        Patient? createdPatient = null;
+        _mockPatientRepository.Setup(repo => repo.Create(It.IsAny<Patient>()))
+            .Callback<Patient>(p => createdPatient = p)
+            .Returns(() => createdPatient!.Id);
+
+        // Act
+        var result = _patientService.CreatePatient(request);
+
+        // Assert
+        Assert.NotNull(createdPatient);
+        Assert.Equal("Новый Пациент", result.FullName);
+        Assert.Equal(createdPatient.Id, result.Id);
     }
 }
