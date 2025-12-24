@@ -1,10 +1,8 @@
 ﻿using Confluent.Kafka;
 using System.Text.Json;
 
-namespace Polyclinic.Kafka;
-
 /// <summary>
-/// Entry point for contracts generator service
+/// Entry point for Kafka contracts generator
 /// </summary>
 public static class Program
 {
@@ -22,13 +20,29 @@ public static class Program
 
         while (true)
         {
-            var contract = ContractGenerator.GeneratePatient();
-
-            var json = JsonSerializer.Serialize(contract);
-
             await producer.ProduceAsync(
                 "patients",
-                new Message<Null, string> { Value = json });
+                new Message<Null, string>
+                {
+                    Value = JsonSerializer.Serialize(
+                        ContractGenerator.GeneratePatient())
+                });
+
+            await producer.ProduceAsync(
+                "doctors",
+                new Message<Null, string>
+                {
+                    Value = JsonSerializer.Serialize(
+                        ContractGenerator.GenerateDoctor())
+                });
+
+            await producer.ProduceAsync(
+                "appointments",
+                new Message<Null, string>
+                {
+                    Value = JsonSerializer.Serialize(
+                        ContractGenerator.GenerateAppointment())
+                });
 
             await Task.Delay(1000);
         }
