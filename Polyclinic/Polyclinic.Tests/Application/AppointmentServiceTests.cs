@@ -13,7 +13,7 @@ namespace Polyclinic.Tests.Application;
 public class AppointmentServiceTests
 {
     private readonly Mock<IRepository<Appointment, int>> _mockAppointmentRepository;
-    private readonly IAppointmentService _appointmentService;
+    private readonly AppointmentService _appointmentService;
 
     public AppointmentServiceTests()
     {

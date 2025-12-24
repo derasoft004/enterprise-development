@@ -3,9 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Polyclinic.Domain.Enums;
 using Polyclinic.Domain.Subjects;
-using Polyclinic.Infrastructure.PostgreSQL.Configurations;
+using Polyclinic.Infrastructure.PostgreSql.Configurations;
 
-namespace Polyclinic.Infrastructure.PostgreSQL;
+namespace Polyclinic.Infrastructure.PostgreSql;
 
 /// <summary>
 /// Database seeder for initial data

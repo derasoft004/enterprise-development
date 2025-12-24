@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 
-namespace Polyclinic.Infrastructure.PostgreSQL.Repository;
+namespace Polyclinic.Infrastructure.PostgreSql.Repository;
 
 public class PostgresPatientRepository(PolyclinicDbContext context) : IRepository<Patient, int>
 {
@@ -21,7 +21,7 @@ public class PostgresPatientRepository(PolyclinicDbContext context) : IRepositor
     /// </summary>
     public List<Patient> ReadAll()
     {
-        return context.Patients.ToList();
+        return [.. context.Patients];
     }
 
     /// <summary>

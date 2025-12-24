@@ -149,7 +149,7 @@ public class AnalyticsControllerTests
     [Fact]
     public void GetPatientsByDoctor_NoPatients_ReturnsNotFound()
     {
-        _mockAnalyticsService.Setup(service => service.GetPatientsByDoctor(999)).Returns(new List<PatientDto>());
+        _mockAnalyticsService.Setup(service => service.GetPatientsByDoctor(999)).Returns([]);
 
         var result = _controller.GetPatientsByDoctor(999);
 

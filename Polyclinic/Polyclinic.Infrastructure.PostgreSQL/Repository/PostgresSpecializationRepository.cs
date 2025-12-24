@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 
-namespace Polyclinic.Infrastructure.PostgreSQL.Repository;
+namespace Polyclinic.Infrastructure.PostgreSql.Repository;
 
 public class PostgresSpecializationRepository(PolyclinicDbContext context) : IRepository<Specialization, int>
 {
@@ -15,7 +15,7 @@ public class PostgresSpecializationRepository(PolyclinicDbContext context) : IRe
 
     public List<Specialization> ReadAll()
     {
-        return context.Specializations.ToList();
+        return [.. context.Specializations];
     }
 
     public Specialization? Read(int id)

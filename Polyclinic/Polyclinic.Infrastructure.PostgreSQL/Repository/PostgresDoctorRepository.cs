@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 
-namespace Polyclinic.Infrastructure.PostgreSQL.Repository;
+namespace Polyclinic.Infrastructure.PostgreSql.Repository;
 
 public class PostgresDoctorRepository(PolyclinicDbContext context) : IRepository<Doctor, int>
 {
@@ -21,9 +21,7 @@ public class PostgresDoctorRepository(PolyclinicDbContext context) : IRepository
     /// </summary>
     public List<Doctor> ReadAll()
     {
-        return context.Doctors
-            .Include(d => d.Specialization)
-            .ToList();
+        return [.. context.Doctors.Include(d => d.Specialization)];
     }
 
     /// <summary>
@@ -78,9 +76,8 @@ public class PostgresDoctorRepository(PolyclinicDbContext context) : IRepository
     /// </summary>
     public List<Doctor> GetByExperience(int years)
     {
-        return context.Doctors
+        return [.. context.Doctors
             .Include(d => d.Specialization)
-            .Where(d => d.Experience.HasValue && d.Experience.Value > years)
-            .ToList();
+            .Where(d => d.Experience.HasValue && d.Experience.Value > years)];
     }
 }

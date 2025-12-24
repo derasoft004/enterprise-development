@@ -3,8 +3,8 @@ using Polyclinic.Application.Interfaces;
 using Polyclinic.Application.Services;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
-using Polyclinic.Infrastructure.PostgreSQL;
-using Polyclinic.Infrastructure.PostgreSQL.Repository;
+using Polyclinic.Infrastructure.PostgreSql;
+using Polyclinic.Infrastructure.PostgreSql.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 

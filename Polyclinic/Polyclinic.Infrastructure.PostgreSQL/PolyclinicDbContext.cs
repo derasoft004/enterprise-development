@@ -1,13 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Polyclinic.Domain.Subjects;
 
-namespace Polyclinic.Infrastructure.PostgreSQL;
+namespace Polyclinic.Infrastructure.PostgreSql;
 
-public class PolyclinicDbContext : DbContext
+public class PolyclinicDbContext(
+    DbContextOptions<PolyclinicDbContext> options
+) : DbContext(options)
 {
-    public PolyclinicDbContext(DbContextOptions<PolyclinicDbContext> options)
-        : base(options) { }
-
     /// <summary>
     /// Patients table
     /// </summary>

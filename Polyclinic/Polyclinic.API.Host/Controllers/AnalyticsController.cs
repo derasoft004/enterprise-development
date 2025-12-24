@@ -52,7 +52,7 @@ public class AnalyticsController(
 
             var patients = analyticsService.GetPatientsByDoctor(id);
             
-            if (patients == null || !patients.Any())
+            if (patients == null || patients.Count == 0)
             {
                 return NotFound($"No patients found for doctor with ID {id}");
             }

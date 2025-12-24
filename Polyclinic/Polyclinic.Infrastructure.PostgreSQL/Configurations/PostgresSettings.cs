@@ -1,4 +1,4 @@
-namespace Polyclinic.Infrastructure.PostgreSQL.Configurations;
+namespace Polyclinic.Infrastructure.PostgreSql.Configurations;
 
 /// <summary>
 /// PostgreSQL Connection Settings

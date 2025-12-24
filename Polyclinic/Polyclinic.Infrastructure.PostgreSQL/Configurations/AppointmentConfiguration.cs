@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Polyclinic.Domain.Subjects;
 
-namespace Polyclinic.Infrastructure.PostgreSQL.Configurations;
+namespace Polyclinic.Infrastructure.PostgreSql.Configurations;
 
 public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 {

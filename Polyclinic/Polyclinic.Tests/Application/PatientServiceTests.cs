@@ -5,7 +5,7 @@ using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
-using Polyclinic.Infrastructure.PostgreSQL;
+using Polyclinic.Infrastructure.PostgreSql;
 
 namespace Polyclinic.Tests.Application;
 
@@ -32,8 +32,7 @@ public class PatientServiceTests
 
         _patientService = new PatientService(
             _mockPatientRepository.Object,
-            _mockAppointmentRepository.Object,
-            _dbContext);
+            _mockAppointmentRepository.Object);
     }
 
     [Fact]

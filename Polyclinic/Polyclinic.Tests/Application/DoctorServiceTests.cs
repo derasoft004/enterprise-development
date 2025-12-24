@@ -14,7 +14,7 @@ namespace Polyclinic.Tests.Application;
 public class DoctorServiceTests
 {
     private readonly Mock<IRepository<Doctor, int>> _mockDoctorRepository;
-    private readonly IDoctorService _doctorService;
+    private readonly DoctorService _doctorService;
 
     public DoctorServiceTests()
     {

@@ -6,7 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <!-- Ensure appsettings files are copied to output -->
         <Content Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -26,6 +25,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Polyclinic.Application\Polyclinic.Application.csproj" />
         <ProjectReference Include="..\Polyclinic.Contracts\Polyclinic.Contracts.csproj" />
-        <ProjectReference Include="..\Polyclinic.Infrastructure.PostgreSQL\Polyclinic.Infrastructure.PostgreSQL.csproj" />
+        <ProjectReference Include="..\Polyclinic.Infrastructure.PostgreSql\Polyclinic.Infrastructure.PostgreSql.csproj" />
     </ItemGroup>
 </Project>

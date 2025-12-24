@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Polyclinic.Infrastructure.PostgreSQL;
+using Polyclinic.Infrastructure.PostgreSql;
 
 #nullable disable
 
-namespace Polyclinic.Infrastructure.PostgreSQL.Migrations
+namespace Polyclinic.Infrastructure.PostgreSql.Migrations
 {
     [DbContext(typeof(PolyclinicDbContext))]
     partial class PolyclinicDbContextModelSnapshot : ModelSnapshot

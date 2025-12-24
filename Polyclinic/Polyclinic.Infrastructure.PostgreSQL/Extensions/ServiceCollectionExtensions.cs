@@ -3,10 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
-using Polyclinic.Infrastructure.PostgreSQL.Configurations;
-using Polyclinic.Infrastructure.PostgreSQL.Repository;
+using Polyclinic.Infrastructure.PostgreSql.Configurations;
+using Polyclinic.Infrastructure.PostgreSql.Repository;
 
-namespace Polyclinic.Infrastructure.PostgreSQL.Extensions;
+namespace Polyclinic.Infrastructure.PostgreSql.Extensions;
 
 public static class ServiceCollectionExtensions
 {

@@ -2,19 +2,19 @@ using Polyclinic.Application.Interfaces;
 using Polyclinic.Contracts.Dto;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
-using Polyclinic.Infrastructure.PostgreSQL;
 
 namespace Polyclinic.Application.Services;
+
 
 /// <summary>
 /// Service implementation for Patient business operations
 /// </summary>
-public class PatientService(
+public class PatientService( 
     IRepository<Patient, int> patientRepository,
-    IRepository<Appointment, int> appointmentRepository,
-    PolyclinicDbContext dbContext)
-    : IPatientService
+    IRepository<Appointment, int> appointmentRepository
+    ) : IPatientService
 {
+
     public List<PatientDto> GetAllPatients()
     {
         var patients = patientRepository.ReadAll();
@@ -42,8 +42,6 @@ public class PatientService(
         };
 
         patientRepository.Create(patient);
-        dbContext.SaveChanges();
-
         return MapToDto(patient);
     }
 
@@ -57,21 +55,12 @@ public class PatientService(
         existing.PhoneNumber = updateRequest.PhoneNumber;
 
         var updated = patientRepository.Update(id, existing);
-        if (updated == null) return null;
-
-        dbContext.SaveChanges();
-        return MapToDto(updated);
+        return updated == null ? null : MapToDto(updated);
     }
 
     public bool DeletePatient(int id)
     {
-        var result = patientRepository.Delete(id);
-        if (result)
-        {
-            dbContext.SaveChanges();
-        }
-
-        return result;
+        return patientRepository.Delete(id);
     }
 
     public List<PatientDto> GetPatientsOverAgeWithMultipleDoctors(int age)

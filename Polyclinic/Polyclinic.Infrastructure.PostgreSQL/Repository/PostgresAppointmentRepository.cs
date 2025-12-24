@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 
-namespace Polyclinic.Infrastructure.PostgreSQL.Repository;
+namespace Polyclinic.Infrastructure.PostgreSql.Repository;
 
 public class PostgresAppointmentRepository(PolyclinicDbContext context) : IRepository<Appointment, int>
 {
@@ -21,11 +21,10 @@ public class PostgresAppointmentRepository(PolyclinicDbContext context) : IRepos
     /// </summary>
     public List<Appointment> ReadAll()
     {
-        return context.Appointments
+        return [.. context.Appointments
             .Include(a => a.Patient)
             .Include(a => a.Doctor)
-                .ThenInclude(d => d!.Specialization)
-            .ToList();
+            .ThenInclude(d => d.Specialization)];
     }
 
     /// <summary>
@@ -83,13 +82,13 @@ public class PostgresAppointmentRepository(PolyclinicDbContext context) : IRepos
     /// </summary>
     public List<Appointment> GetByDateRange(DateTime startDate, DateTime endDate)
     {
-        return context.Appointments
-            .Include(a => a.Patient)
-            .Include(a => a.Doctor)
-                .ThenInclude(d => d!.Specialization)
-            .Where(a => a.AppointmentDateTime >= startDate && 
-                       a.AppointmentDateTime <= endDate)
-            .ToList();
+        return [.. context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor)
+                .ThenInclude(d => d.Specialization)
+                .Where(a =>
+                    a.AppointmentDateTime >= startDate &&
+                    a.AppointmentDateTime <= endDate)];
     }
 
     /// <summary>
@@ -97,26 +96,26 @@ public class PostgresAppointmentRepository(PolyclinicDbContext context) : IRepos
     /// </summary>
     public List<Appointment> GetByDoctorId(int doctorId)
     {
-        return context.Appointments
-            .Include(a => a.Patient)
-            .Include(a => a.Doctor)
-                .ThenInclude(d => d!.Specialization)
-            .Where(a => a.Doctor.Id == doctorId)
-            .ToList();
+        return [.. context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor)
+                .ThenInclude(d => d.Specialization)
+                .Where(a => a.Doctor.Id == doctorId)];
     }
+
 
     /// <summary>
     /// Get appointments by patient ID
     /// </summary>
     public List<Appointment> GetByPatientId(int patientId)
     {
-        return context.Appointments
-            .Include(a => a.Patient)
-            .Include(a => a.Doctor)
-                .ThenInclude(d => d!.Specialization)
-            .Where(a => a.Patient.Id == patientId)
-            .ToList();
+        return [ .. context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor)
+                .ThenInclude(d => d.Specialization)
+                .Where(a => a.Patient.Id == patientId)];
     }
+
 
     /// <summary>
     /// Get repeat appointments count for specific month
