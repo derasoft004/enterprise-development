@@ -24,17 +24,9 @@ public class CustomWebApplicationFactory
             if (descriptor != null)
                 services.Remove(descriptor);
 
+            // try inmemory database
             services.AddDbContext<PolyclinicDbContext>(options =>
-                options.UseNpgsql(
-                    "Host=localhost;Port=5432;Database=polyclinic_test;Username=zerder"));
-
-            var serviceProvider = services.BuildServiceProvider();
-
-            using var scope = serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<PolyclinicDbContext>();
-
-            context.Database.EnsureDeleted();
-            context.Database.Migrate();
+                options.UseInMemoryDatabase("Polyclinic_TestDb"));
         });
     }
 }

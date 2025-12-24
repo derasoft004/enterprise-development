@@ -8,7 +8,7 @@ using Polyclinic.Infrastructure.PostgreSql.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add configuration from appsettings.json
+// Add configuration
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -24,82 +24,65 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Get connection string from configuration
-var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
-
-// Log for debugging
-Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
-Console.WriteLine($"Connection string from config: {(string.IsNullOrEmpty(connectionString) ? "EMPTY OR NULL" : "FOUND")}");
-
-if (string.IsNullOrEmpty(connectionString))
+if (!builder.Environment.IsEnvironment("Testing"))
 {
-    // Fallback connection string
-    connectionString = "Host=localhost;Port=5432;Database=polyclinic;Username=zerder;";
-    Console.WriteLine($"Using fallback connection string: {connectionString}");
+    var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
+
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        connectionString = "Host=localhost;Port=5432;Database=polyclinic;Username=zerder;";
+    }
+
+    builder.Services.AddDbContext<PolyclinicDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
+else
+{
+    // try inmemory 
+    builder.Services.AddDbContext<PolyclinicDbContext>(options =>
+        options.UseInMemoryDatabase("Polyclinic_TestDb"));
 }
 
-// Register DbContext
-builder.Services.AddDbContext<PolyclinicDbContext>(options =>
-    options.UseNpgsql(connectionString));
-
-// Register repositories
+// Repositories
 builder.Services.AddScoped<IRepository<Patient, int>, PostgresPatientRepository>();
 builder.Services.AddScoped<IRepository<Doctor, int>, PostgresDoctorRepository>();
 builder.Services.AddScoped<IRepository<Appointment, int>, PostgresAppointmentRepository>();
 builder.Services.AddScoped<IRepository<Specialization, int>, PostgresSpecializationRepository>();
 
-// Register services
+// Services
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
-// Register seeder
+// Seeder
 builder.Services.AddScoped<PostgresSeeder>();
 
 var app = builder.Build();
 
-// Apply migrations and seed data
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("Testing"))
 {
-    try
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<PolyclinicDbContext>();
+
+    if (dbContext.Database.CanConnect())
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<PolyclinicDbContext>();
-        Console.WriteLine("Applying migrations...");
-        
-        // Check if database exists
-        if (dbContext.Database.CanConnect())
-        {
-            Console.WriteLine("Database connected successfully.");
-            dbContext.Database.Migrate();
-            
-            var seeder = scope.ServiceProvider.GetRequiredService<PostgresSeeder>();
-            Console.WriteLine("Seeding data...");
-            seeder.Seed();
-        }
-        else
-        {
-            Console.WriteLine("Cannot connect to database. Creating database...");
-            dbContext.Database.EnsureCreated();
-            
-            var seeder = scope.ServiceProvider.GetRequiredService<PostgresSeeder>();
-            Console.WriteLine("Seeding data...");
-            seeder.Seed();
-        }
+        dbContext.Database.Migrate();
     }
-    catch (Exception ex)
+    else
     {
-        Console.WriteLine($"Error during migration/seeding: {ex.Message}");
-        Console.WriteLine($"Full error: {ex}");
-        throw;
+        dbContext.Database.EnsureCreated();
     }
+
+    var seeder = scope.ServiceProvider.GetRequiredService<PostgresSeeder>();
+    seeder.Seed();
 }
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Polyclinic API v1");
-    c.RoutePrefix = "swagger"; 
+    c.RoutePrefix = "swagger";
     c.EnableTryItOutByDefault();
 });
 
