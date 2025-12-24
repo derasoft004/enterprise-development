@@ -1,5 +1,7 @@
 using Polyclinic.Contracts.Dto;
 
+namespace Polyclinic.Kafka;
+
 /// <summary>
 /// Factory for generating contracts
 /// </summary>

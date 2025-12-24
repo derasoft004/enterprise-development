@@ -1,6 +1,8 @@
 ﻿using Confluent.Kafka;
 using System.Text.Json;
 
+namespace Polyclinic.Kafka;
+
 /// <summary>
 /// Entry point for contracts generator service
 /// </summary>
