@@ -26,12 +26,7 @@ builder.Services.AddSwaggerGen();
 
 if (!builder.Environment.IsEnvironment("Testing"))
 {
-    var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
-
-    if (string.IsNullOrEmpty(connectionString))
-    {
-        connectionString = "Host=localhost;Port=5432;Database=polyclinic;Username=zerder;";
-    }
+    var connectionString = builder.Configuration.GetConnectionString("polyclinic");
 
     builder.Services.AddDbContext<PolyclinicDbContext>(options =>
         options.UseNpgsql(connectionString));
