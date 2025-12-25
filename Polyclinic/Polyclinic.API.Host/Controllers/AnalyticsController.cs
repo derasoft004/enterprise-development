@@ -14,9 +14,9 @@ public class AnalyticsController(
 {
 
     [HttpGet("doctors/experience/{years:int}")]
-    [ProducesResponseType(typeof(List<DoctorDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<List<DoctorDto>> GetDoctorsWithExperienceMoreThan(int years)
     {
         try
@@ -38,9 +38,9 @@ public class AnalyticsController(
 
     [HttpGet("doctors/{id:int}/patients")]
     [ProducesResponseType(typeof(List<PatientDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<List<PatientDto>> GetPatientsByDoctor(int id)
     {
         try
@@ -67,9 +67,9 @@ public class AnalyticsController(
     }
 
     [HttpGet("appointments/repeat/{year:int}/{month:int}")]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)] // Изменено на int
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<int> GetRepeatAppointmentsByMonth(int year, int month)
     {
         try
@@ -95,9 +95,9 @@ public class AnalyticsController(
     }
 
     [HttpGet("patients/age/{age:int}/multiple-doctors")]
-    [ProducesResponseType(typeof(List<PatientDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<List<PatientDto>> GetPatientsOlderThanWithMultipleDoctors(int age)
     {
         try
@@ -118,9 +118,9 @@ public class AnalyticsController(
     }
 
     [HttpGet("appointments/room/{room:int}/{year:int}/{month:int}")]
-    [ProducesResponseType(typeof(List<AppointmentDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<List<AppointmentDto>> GetAppointmentsByRoomAndMonth(int room, int year, int month)
     {
         try
@@ -150,5 +150,5 @@ public class AnalyticsController(
         }
     }
 
-    // Остальные методы (count) нужно добавить в интерфейс IAnalyticsService или удалить
+    // Остальные методы удалил
 }

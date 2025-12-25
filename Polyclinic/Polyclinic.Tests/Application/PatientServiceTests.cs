@@ -17,7 +17,7 @@ public class PatientServiceTests
     private readonly Mock<IRepository<Patient, int>> _mockPatientRepository;
     private readonly Mock<IRepository<Appointment, int>> _mockAppointmentRepository;
     private readonly PolyclinicDbContext _dbContext;
-    private readonly IPatientService _patientService;
+    private readonly PatientService _patientService;
 
     public PatientServiceTests()
     {

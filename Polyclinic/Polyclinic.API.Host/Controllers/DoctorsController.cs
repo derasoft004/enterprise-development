@@ -17,8 +17,8 @@ public class DoctorsController(
     /// Get all doctors
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(typeof(List<DoctorDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<List<DoctorDto>> GetAllDoctors()
     {
         try
@@ -38,10 +38,10 @@ public class DoctorsController(
     /// </summary>
     /// <param name="id">Doctor ID</param>
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(DoctorDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<DoctorDto> GetDoctorById(int id)
     {
         try
@@ -72,9 +72,9 @@ public class DoctorsController(
     /// </summary>
     /// <param name="request">Doctor data</param>
     [HttpPost]
-    [ProducesResponseType(typeof(DoctorDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<DoctorDto> CreateDoctor([FromBody] CreateDoctorRequest request)
     {
         try
@@ -109,11 +109,11 @@ public class DoctorsController(
     /// <param name="id">Doctor ID</param>
     /// <param name="request">Updated doctor data</param>
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(DoctorDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<DoctorDto> UpdateDoctor(
         int id,
         [FromBody] UpdateDoctorRequest request)

@@ -17,8 +17,8 @@ public class PatientsController(
     /// Get all patients
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(typeof(List<PatientDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<List<PatientDto>> GetAllPatients()
     {
         try
@@ -38,10 +38,10 @@ public class PatientsController(
     /// </summary>
     /// <param name="id">Patient ID</param>
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(PatientDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<PatientDto> GetPatientById(int id)
     {
         try
@@ -72,9 +72,9 @@ public class PatientsController(
     /// </summary>
     /// <param name="request">Patient data</param>
     [HttpPost]
-    [ProducesResponseType(typeof(PatientDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<PatientDto> CreatePatient([FromBody] CreatePatientRequest request)
     {
         try
@@ -109,11 +109,11 @@ public class PatientsController(
     /// <param name="id">Patient ID</param>
     /// <param name="request">Updated patient data</param>
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(PatientDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<PatientDto> UpdatePatient(
         int id,
         [FromBody] UpdatePatientRequest request)

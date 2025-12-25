@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Polyclinic.Domain.Interfaces;
 using Polyclinic.Domain.Subjects;
 
